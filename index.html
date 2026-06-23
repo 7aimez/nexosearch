@@ -35,7 +35,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Header */
         .header {
             display: flex;
             align-items: center;
@@ -89,7 +88,6 @@
             letter-spacing: -0.01em;
         }
 
-        /* Search */
         .search-wrapper {
             position: relative;
             width: 100%;
@@ -165,7 +163,6 @@
             display: block;
         }
 
-        /* Keyboard shortcut hint */
         .hint {
             position: absolute;
             right: 16px;
@@ -186,7 +183,6 @@
             display: none;
         }
 
-        /* Results */
         #result {
             margin-top: 24px;
             padding: 20px 24px;
@@ -247,7 +243,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Minimal mode - clean and simple */
         .minimal-redirect {
             text-align: center;
             padding: 10px 0;
@@ -283,7 +278,6 @@
             opacity: 0.7;
         }
 
-        /* Top Results Grid - 4x1 horizontal */
         .top-results-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -400,7 +394,6 @@
             color: #666;
         }
 
-        /* Verbose mode - detailed */
         .verbose-details {
             margin-top: 6px;
             padding: 14px 16px;
@@ -497,7 +490,6 @@
             font-size: 12px;
         }
 
-        /* Settings Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -750,7 +742,6 @@
             margin-right: 4px;
         }
 
-        /* Responsive */
         @media (max-width: 600px) {
             h1 {
                 font-size: 28px;
@@ -800,7 +791,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="logo-group">
                 <i class="fas fa-compass logo-icon"></i>
@@ -812,7 +802,6 @@
         </div>
         <p class="subtitle">Type anything. Press Enter. Get the best result.</p>
 
-        <!-- Search -->
         <div class="search-wrapper">
             <i class="fas fa-search search-icon"></i>
             <input 
@@ -828,11 +817,9 @@
             <span class="hint">↵</span>
         </div>
 
-        <!-- Results -->
         <div id="result"></div>
     </div>
 
-    <!-- Settings Modal -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal">
             <div class="modal-header">
@@ -1366,6 +1353,8 @@
         // MAIN SEARCH FUNCTION
         // ============================================
         let redirectTimeout = null;
+        let currentResults = null;
+        let currentQuery = '';
 
         async function searchAndRedirect() {
             const query = input.value.trim();
@@ -1404,11 +1393,15 @@
                 const rankedResults = rankResults(results, query);
                 const topResult = rankedResults[0];
 
+                // Store results for potential re-rendering
+                currentResults = rankedResults;
+                currentQuery = query;
+
                 // Show results in either minimal or verbose mode
                 if (isVerbose) {
-                    showResult(renderVerboseResults(results, query), 'success');
+                    showResult(renderVerboseResults(rankedResults, query), 'success');
                 } else {
-                    showResult(renderMinimalRedirect(results, query), 'success');
+                    showResult(renderMinimalRedirect(rankedResults, query), 'success');
                 }
 
                 if (hasDelay) {
@@ -1505,6 +1498,8 @@
                 clearTimeout(redirectTimeout);
                 redirectTimeout = null;
             }
+            currentResults = null;
+            currentQuery = '';
         });
 
         settingsBtn.addEventListener('click', function() {
