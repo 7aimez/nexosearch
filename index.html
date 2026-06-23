@@ -24,10 +24,21 @@
             transition: background 0.3s ease;
         }
 
+        body.newtab-mode {
+            background: #f8f9fa;
+            padding: 30px 20px;
+            align-items: flex-start;
+            padding-top: 40px;
+        }
+
         .container {
             width: 100%;
             max-width: 720px;
             animation: fadeIn 0.5s ease;
+        }
+
+        body.newtab-mode .container {
+            max-width: 720px;
         }
 
         @keyframes fadeIn {
@@ -35,11 +46,98 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* New Tab Mode Styles */
+        .newtab-header {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        body.newtab-mode .newtab-header {
+            display: flex;
+        }
+
+        .newtab-clock {
+            font-size: 56px;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            color: #1a1a1a;
+            line-height: 1;
+        }
+
+        .newtab-date {
+            font-size: 16px;
+            color: #999;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .newtab-greeting {
+            font-size: 20px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-top: 2px;
+        }
+
+        /* Quick Links - Small icon only */
+        .quicklinks {
+            display: none;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        body.newtab-mode .quicklinks {
+            display: flex;
+        }
+
+        .quicklink {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: white;
+            border: 1px solid #e8e8e8;
+            font-size: 18px;
+            color: #1a1a1a;
+            position: relative;
+        }
+
+        .quicklink:hover {
+            border-color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .quicklink img {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+
+        .quicklink .fa-icon {
+            font-size: 18px;
+        }
+
+        /* Header */
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 8px;
+        }
+
+        body.newtab-mode .header {
+            margin-bottom: 20px;
+            justify-content: space-between;
         }
 
         .logo-group {
@@ -88,8 +186,17 @@
             letter-spacing: -0.01em;
         }
 
+        body.newtab-mode .subtitle {
+            display: none;
+        }
+
+        /* Search */
         .search-wrapper {
             position: relative;
+            width: 100%;
+        }
+
+        body.newtab-mode .search-wrapper {
             width: 100%;
         }
 
@@ -116,6 +223,15 @@
             transition: all 0.25s ease;
             color: #1a1a1a;
             letter-spacing: -0.01em;
+        }
+
+        body.newtab-mode input {
+            background: white;
+            border-color: #e0e0e0;
+            padding: 16px 52px 16px 48px;
+            font-size: 16px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         input::placeholder {
@@ -183,12 +299,17 @@
             display: none;
         }
 
+        /* Results */
         #result {
             margin-top: 24px;
             padding: 20px 24px;
             border-radius: 14px;
             display: none;
             animation: slideUp 0.3s ease;
+        }
+
+        body.newtab-mode #result {
+            margin-top: 24px;
         }
 
         @keyframes slideUp {
@@ -490,102 +611,92 @@
             font-size: 12px;
         }
 
-        .modal-overlay {
+        .grid-label {
+            font-size: 13px;
+            color: #999;
+            font-weight: 500;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .grid-label i {
+            margin-right: 4px;
+        }
+
+        /* Fullscreen Settings */
+        .settings-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.2s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
             background: white;
-            border-radius: 20px;
-            padding: 32px;
-            max-width: 440px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            animation: slideUp 0.3s ease;
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+            padding: 40px 20px;
         }
 
-        .modal-header {
+        .settings-overlay.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .settings-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .settings-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        .modal-header h2 {
-            font-size: 20px;
+        .settings-header h2 {
+            font-size: 28px;
             font-weight: 600;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
-        .modal-close {
+        .settings-close {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 24px;
             color: #999;
             cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 10px;
             transition: all 0.2s;
         }
 
-        .modal-close:hover {
+        .settings-close:hover {
             background: #f5f5f5;
             color: #1a1a1a;
         }
 
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .settings-section {
+            margin-bottom: 32px;
         }
 
-        .modal-body label {
-            font-size: 14px;
-            font-weight: 500;
+        .settings-section h3 {
+            font-size: 16px;
+            font-weight: 600;
             color: #1a1a1a;
+            margin-bottom: 16px;
         }
 
-        .modal-body input[type="password"],
-        .modal-body input[type="text"] {
-            width: 100%;
-            padding: 12px 14px;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            border: 2px solid #e8e8e8;
-            border-radius: 10px;
-            outline: none;
-            background: #fafafa;
-            transition: all 0.2s;
-        }
-
-        .modal-body input:focus {
-            border-color: #1a1a1a;
-            background: white;
-        }
-
-        .modal-body .helper {
+        .settings-section .helper {
             font-size: 13px;
             color: #999;
-            line-height: 1.5;
-            margin-top: -8px;
+            margin-top: 6px;
         }
 
-        .modal-body .helper a {
+        .settings-section .helper a {
             color: #1a1a1a;
             text-decoration: underline;
         }
@@ -593,15 +704,15 @@
         .settings-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .settings-toggle {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
         }
 
         .settings-toggle:last-child {
@@ -668,20 +779,168 @@
             transform: translateX(20px);
         }
 
-        .modal-footer {
+        .settings-input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            outline: none;
+            background: #fafafa;
+            transition: all 0.2s;
+        }
+
+        .settings-input:focus {
+            border-color: #1a1a1a;
+            background: white;
+        }
+
+        .quicklink-item {
             display: flex;
             gap: 10px;
+            align-items: center;
+            padding: 10px;
+            background: #fafafa;
+            border-radius: 10px;
+            border: 1px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .quicklink-item .ql-name-input {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            outline: none;
+            background: white;
+        }
+
+        .quicklink-item .ql-url-input {
+            flex: 2;
+            min-width: 120px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            outline: none;
+            background: white;
+        }
+
+        .quicklink-item .ql-name-input:focus,
+        .quicklink-item .ql-url-input:focus {
+            border-color: #1a1a1a;
+        }
+
+        .quicklink-item .ql-icon-type {
+            padding: 6px 10px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            outline: none;
+            background: white;
+            cursor: pointer;
+        }
+
+        .quicklink-item .ql-icon-input {
+            width: 120px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            outline: none;
+            background: white;
+        }
+
+        .quicklink-item .ql-icon-input:focus {
+            border-color: #1a1a1a;
+        }
+
+        .quicklink-item .ql-color {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid #e8e8e8;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 0;
+        }
+
+        .quicklink-item .ql-preview {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            font-size: 16px;
+            flex-shrink: 0;
+            border: 1px solid #e8e8e8;
+        }
+
+        .quicklink-item .ql-preview img {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+
+        .quicklink-item .ql-remove {
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .quicklink-item .ql-remove:hover {
+            color: #c62828;
+        }
+
+        .add-quicklink-btn {
+            padding: 10px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            background: none;
+            cursor: pointer;
+            color: #999;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            width: 100%;
             margin-top: 8px;
         }
 
-        .modal-footer button {
+        .add-quicklink-btn:hover {
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .settings-actions button {
             flex: 1;
-            padding: 12px;
-            font-size: 14px;
+            padding: 14px;
+            font-size: 15px;
             font-weight: 500;
             font-family: 'Inter', sans-serif;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -729,19 +988,7 @@
             background: #ef5350;
         }
 
-        .grid-label {
-            font-size: 13px;
-            color: #999;
-            font-weight: 500;
-            margin-top: 12px;
-            margin-bottom: 6px;
-            text-align: center;
-        }
-
-        .grid-label i {
-            margin-right: 4px;
-        }
-
+        /* Responsive */
         @media (max-width: 600px) {
             h1 {
                 font-size: 28px;
@@ -757,6 +1004,11 @@
                 font-size: 15px;
             }
 
+            body.newtab-mode input {
+                padding: 14px 44px 14px 42px;
+                font-size: 15px;
+            }
+
             .hint {
                 display: none;
             }
@@ -765,32 +1017,50 @@
                 padding: 16px 18px;
             }
 
-            .modal {
-                padding: 24px;
+            .settings-container {
+                padding: 0 10px;
             }
 
-            .result-card .card-favicon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
+            .settings-header h2 {
+                font-size: 24px;
             }
 
-            .result-card .card-title {
-                font-size: 12px;
+            .newtab-clock {
+                font-size: 40px;
             }
 
-            .result-card .card-url {
-                font-size: 10px;
+            .quicklink-item {
+                flex-wrap: wrap;
             }
 
-            .minimal-redirect .redirect-url {
-                font-size: 16px;
+            .quicklink-item .ql-name-input {
+                flex-basis: 100%;
+            }
+
+            .quicklink-item .ql-url-input {
+                flex-basis: 100%;
+            }
+
+            .quicklink-item .ql-icon-input {
+                flex: 1;
+                min-width: 80px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- New Tab Header -->
+        <div class="newtab-header">
+            <div class="newtab-clock" id="clock">00:00</div>
+            <div class="newtab-date" id="date">January 1, 2024</div>
+            <div class="newtab-greeting" id="greeting">Good morning</div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="quicklinks" id="quicklinks"></div>
+
+        <!-- Header -->
         <div class="header">
             <div class="logo-group">
                 <i class="fas fa-compass logo-icon"></i>
@@ -802,6 +1072,7 @@
         </div>
         <p class="subtitle">Type anything. Press Enter. Get the best result.</p>
 
+        <!-- Search -->
         <div class="search-wrapper">
             <i class="fas fa-search search-icon"></i>
             <input 
@@ -817,43 +1088,68 @@
             <span class="hint">↵</span>
         </div>
 
+        <!-- Results -->
         <div id="result"></div>
     </div>
 
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2><i class="fas fa-sliders-h" style="margin-right: 8px; color: #999;"></i>Settings</h2>
-                <button class="modal-close" id="modalClose">
+    <!-- Fullscreen Settings -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-container">
+            <div class="settings-header">
+                <h2><i class="fas fa-sliders-h" style="margin-right: 12px; color: #999;"></i>Settings</h2>
+                <button class="settings-close" id="settingsClose">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <div>
-                    <label for="apiKeyInput">
-                        <i class="fas fa-key" style="margin-right: 6px; color: #999;"></i>
-                        Tavily API Key
-                    </label>
-                    <input 
-                        type="password" 
-                        id="apiKeyInput" 
-                        placeholder="Enter your Tavily API key..."
-                        autocomplete="off"
-                    >
-                    <div class="helper" style="margin-top: 6px;">
-                        <span id="apiStatus">
-                            <span class="status-dot missing"></span>
-                            No API key configured
-                        </span>
-                        <br>
-                        Get your free key from 
-                        <a href="https://app.tavily.com/home" target="_blank">Tavily</a>
-                        <i class="fas fa-external-link-alt" style="font-size: 11px;"></i>
-                        — 1,000 free credits/month, no card required!
-                    </div>
-                </div>
 
+            <!-- API Key -->
+            <div class="settings-section">
+                <h3><i class="fas fa-key" style="margin-right: 8px; color: #999;"></i>API Key</h3>
+                <input 
+                    type="password" 
+                    id="apiKeyInput" 
+                    class="settings-input"
+                    placeholder="Enter your Tavily API key..."
+                    autocomplete="off"
+                >
+                <div class="helper" style="margin-top: 6px;">
+                    <span id="apiStatus">
+                        <span class="status-dot missing"></span>
+                        No API key configured
+                    </span>
+                    <br>
+                    Get your free key from 
+                    <a href="https://app.tavily.com/home" target="_blank">Tavily</a>
+                    <i class="fas fa-external-link-alt" style="font-size: 11px;"></i>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="settings-section">
+                <h3><i class="fas fa-link" style="margin-right: 8px; color: #999;"></i>Quick Links</h3>
+                <div id="quicklinksEditor"></div>
+                <button class="add-quicklink-btn" id="addQuicklinkBtn">
+                    <i class="fas fa-plus"></i> Add Quick Link
+                </button>
+            </div>
+
+            <!-- Toggles -->
+            <div class="settings-section">
+                <h3><i class="fas fa-toggle-on" style="margin-right: 8px; color: #999;"></i>Features</h3>
                 <div class="settings-group">
+                    <div class="settings-toggle">
+                        <div>
+                            <div class="toggle-label">
+                                New Tab Mode
+                                <small>Show clock, date, greeting and quick links</small>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="newTabToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
                     <div class="settings-toggle">
                         <div>
                             <div class="toggle-label">
@@ -894,12 +1190,14 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+
+            <!-- Actions -->
+            <div class="settings-actions">
                 <button class="btn-secondary" id="clearApiBtn">
-                    <i class="fas fa-trash-alt"></i> Clear
+                    <i class="fas fa-trash-alt"></i> Clear API Key
                 </button>
-                <button class="btn-primary" id="saveApiBtn">
-                    <i class="fas fa-check"></i> Save
+                <button class="btn-primary" id="saveSettingsBtn">
+                    <i class="fas fa-check"></i> Save Settings
                 </button>
             </div>
         </div>
@@ -912,6 +1210,7 @@
         const API_URL = 'https://api.tavily.com/search';
         const STORAGE_KEY = 'nexosearch_api_key';
         const SETTINGS_KEY = 'nexosearch_settings';
+        const QUICKLINKS_KEY = 'nexosearch_quicklinks';
 
         // ============================================
         // DOM ELEMENTS
@@ -920,15 +1219,201 @@
         const clearBtn = document.getElementById('clearBtn');
         const resultDiv = document.getElementById('result');
         const settingsBtn = document.getElementById('settingsBtn');
-        const settingsModal = document.getElementById('settingsModal');
-        const modalClose = document.getElementById('modalClose');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const settingsClose = document.getElementById('settingsClose');
         const apiKeyInput = document.getElementById('apiKeyInput');
-        const saveApiBtn = document.getElementById('saveApiBtn');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         const clearApiBtn = document.getElementById('clearApiBtn');
         const apiStatus = document.getElementById('apiStatus');
+        const newTabToggle = document.getElementById('newTabToggle');
         const verboseToggle = document.getElementById('verboseToggle');
         const showTopResultsToggle = document.getElementById('showTopResultsToggle');
         const redirectDelayToggle = document.getElementById('redirectDelayToggle');
+        const quicklinksContainer = document.getElementById('quicklinks');
+        const quicklinksEditor = document.getElementById('quicklinksEditor');
+        const addQuicklinkBtn = document.getElementById('addQuicklinkBtn');
+        const clock = document.getElementById('clock');
+        const dateEl = document.getElementById('date');
+        const greeting = document.getElementById('greeting');
+
+        // ============================================
+        // QUICK LINKS MANAGEMENT
+        // ============================================
+        const defaultQuicklinks = [
+            { name: 'Google', url: 'https://google.com', iconType: 'fa', icon: 'fa-google', color: '#4285f4' },
+            { name: 'YouTube', url: 'https://youtube.com', iconType: 'fa', icon: 'fa-youtube', color: '#ff0000' },
+            { name: 'GitHub', url: 'https://github.com', iconType: 'fa', icon: 'fa-github', color: '#333' },
+            { name: 'Reddit', url: 'https://reddit.com', iconType: 'fa', icon: 'fa-reddit', color: '#ff4500' }
+        ];
+
+        function getQuicklinks() {
+            try {
+                const links = JSON.parse(localStorage.getItem(QUICKLINKS_KEY));
+                return links && links.length > 0 ? links : defaultQuicklinks;
+            } catch {
+                return defaultQuicklinks;
+            }
+        }
+
+        function saveQuicklinks(links) {
+            localStorage.setItem(QUICKLINKS_KEY, JSON.stringify(links));
+            renderQuicklinks();
+            renderQuicklinksEditor();
+        }
+
+        function renderQuicklinks() {
+            const links = getQuicklinks();
+            if (links.length === 0) {
+                quicklinksContainer.innerHTML = '';
+                return;
+            }
+            quicklinksContainer.innerHTML = links.map(link => {
+                let iconHtml = '';
+                if (link.iconType === 'image' && link.icon) {
+                    iconHtml = `<img src="${link.icon}" alt="${link.name}">`;
+                } else if (link.iconType === 'fa' && link.icon) {
+                    iconHtml = `<i class="fas ${link.icon} fa-icon"></i>`;
+                } else {
+                    iconHtml = `<i class="fas fa-link fa-icon"></i>`;
+                }
+                return `
+                    <a href="${link.url}" class="quicklink" target="_blank" title="${link.name}" style="background: ${link.color || '#f0f0f0'}; color: white; border-color: ${link.color || '#e8e8e8'};">
+                        ${iconHtml}
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function renderQuicklinksEditor() {
+            const links = getQuicklinks();
+            quicklinksEditor.innerHTML = links.map((link, index) => `
+                <div class="quicklink-item">
+                    <input type="text" class="ql-name-input" value="${link.name}" placeholder="Name" data-index="${index}">
+                    <input type="text" class="ql-url-input" value="${link.url}" placeholder="URL" data-index="${index}">
+                    <select class="ql-icon-type" data-index="${index}">
+                        <option value="fa" ${link.iconType === 'fa' ? 'selected' : ''}>Font Awesome</option>
+                        <option value="image" ${link.iconType === 'image' ? 'selected' : ''}>Image URL</option>
+                    </select>
+                    <input type="text" class="ql-icon-input" value="${link.icon || ''}" placeholder="Icon (fa-xxx or image URL)" data-index="${index}">
+                    <div class="ql-preview" id="preview-${index}">
+                        ${link.iconType === 'image' && link.icon ? 
+                            `<img src="${link.icon}" alt="preview">` : 
+                            link.iconType === 'fa' && link.icon ? 
+                            `<i class="fas ${link.icon}"></i>` : 
+                            `<i class="fas fa-link"></i>`
+                        }
+                    </div>
+                    <input type="color" class="ql-color" value="${link.color || '#f0f0f0'}" data-index="${index}">
+                    <button class="ql-remove" data-index="${index}"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+
+            // Add event listeners
+            document.querySelectorAll('.ql-name-input').forEach(el => {
+                el.addEventListener('change', updateQuicklink);
+            });
+            document.querySelectorAll('.ql-url-input').forEach(el => {
+                el.addEventListener('change', updateQuicklink);
+            });
+            document.querySelectorAll('.ql-icon-type').forEach(el => {
+                el.addEventListener('change', updateQuicklinkPreview);
+                el.addEventListener('change', updateQuicklink);
+            });
+            document.querySelectorAll('.ql-icon-input').forEach(el => {
+                el.addEventListener('input', updateQuicklinkPreview);
+                el.addEventListener('change', updateQuicklink);
+            });
+            document.querySelectorAll('.ql-color').forEach(el => {
+                el.addEventListener('change', updateQuicklink);
+            });
+            document.querySelectorAll('.ql-remove').forEach(el => {
+                el.addEventListener('click', removeQuicklink);
+            });
+        }
+
+        function updateQuicklinkPreview(e) {
+            const index = parseInt(e.target.dataset.index);
+            const links = getQuicklinks();
+            const typeSelect = document.querySelector(`.ql-icon-type[data-index="${index}"]`);
+            const iconInput = document.querySelector(`.ql-icon-input[data-index="${index}"]`);
+            const preview = document.getElementById(`preview-${index}`);
+            
+            if (!preview || !typeSelect || !iconInput) return;
+            
+            const type = typeSelect.value;
+            const icon = iconInput.value;
+            
+            if (type === 'image' && icon) {
+                preview.innerHTML = `<img src="${icon}" alt="preview" onerror="this.style.display='none'">`;
+            } else if (type === 'fa' && icon) {
+                preview.innerHTML = `<i class="fas ${icon}"></i>`;
+            } else {
+                preview.innerHTML = `<i class="fas fa-link"></i>`;
+            }
+        }
+
+        function updateQuicklink(e) {
+            const index = parseInt(e.target.dataset.index);
+            const links = getQuicklinks();
+            const nameInput = document.querySelector(`.ql-name-input[data-index="${index}"]`);
+            const urlInput = document.querySelector(`.ql-url-input[data-index="${index}"]`);
+            const typeSelect = document.querySelector(`.ql-icon-type[data-index="${index}"]`);
+            const iconInput = document.querySelector(`.ql-icon-input[data-index="${index}"]`);
+            const colorInput = document.querySelector(`.ql-color[data-index="${index}"]`);
+            
+            if (nameInput) links[index].name = nameInput.value;
+            if (urlInput) links[index].url = urlInput.value;
+            if (typeSelect) links[index].iconType = typeSelect.value;
+            if (iconInput) links[index].icon = iconInput.value;
+            if (colorInput) links[index].color = colorInput.value;
+            
+            saveQuicklinks(links);
+        }
+
+        function removeQuicklink(e) {
+            const index = parseInt(e.target.dataset.index);
+            const links = getQuicklinks();
+            links.splice(index, 1);
+            saveQuicklinks(links);
+        }
+
+        function addQuicklink() {
+            const links = getQuicklinks();
+            links.push({ 
+                name: 'New Link', 
+                url: 'https://example.com', 
+                iconType: 'fa', 
+                icon: 'fa-link', 
+                color: '#666' 
+            });
+            saveQuicklinks(links);
+            // Re-render with preview updates
+            renderQuicklinksEditor();
+        }
+
+        addQuicklinkBtn.addEventListener('click', addQuicklink);
+
+        // ============================================
+        // CLOCK AND DATE
+        // ============================================
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            clock.textContent = `${hours}:${minutes}`;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = now.toLocaleDateString('en-US', options);
+
+            const hour = now.getHours();
+            let greetingText = 'Good evening';
+            if (hour < 12) greetingText = 'Good morning';
+            else if (hour < 17) greetingText = 'Good afternoon';
+            greeting.textContent = greetingText;
+        }
+
+        updateClock();
+        setInterval(updateClock, 10000);
 
         // ============================================
         // SETTINGS MANAGEMENT
@@ -936,21 +1421,38 @@
         function getSettings() {
             try {
                 const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-                return settings || { verbose: false, showTopResults: true, redirectDelay: true };
+                return settings || { 
+                    newTab: false, 
+                    verbose: false, 
+                    showTopResults: true, 
+                    redirectDelay: true 
+                };
             } catch {
-                return { verbose: false, showTopResults: true, redirectDelay: true };
+                return { newTab: false, verbose: false, showTopResults: true, redirectDelay: true };
             }
         }
 
         function saveSettings(settings) {
             localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+            applySettings(settings);
         }
 
         function loadSettings() {
             const settings = getSettings();
+            newTabToggle.checked = settings.newTab || false;
             verboseToggle.checked = settings.verbose || false;
             showTopResultsToggle.checked = settings.showTopResults !== false;
             redirectDelayToggle.checked = settings.redirectDelay !== false;
+            applySettings(settings);
+        }
+
+        function applySettings(settings) {
+            if (settings.newTab) {
+                document.body.classList.add('newtab-mode');
+            } else {
+                document.body.classList.remove('newtab-mode');
+            }
+            renderQuicklinks();
         }
 
         // ============================================
@@ -993,7 +1495,6 @@
             try {
                 const urlObj = new URL(url);
                 const hostname = urlObj.hostname;
-                
                 const baseDomain = hostname.replace(/^www\./, '');
                 const queryLower = query.toLowerCase().trim();
                 const domainParts = baseDomain.split('.');
@@ -1006,12 +1507,10 @@
                         baseDomain === queryLower + '.org' ||
                         baseDomain === queryLower + '.net' ||
                         baseDomain === queryLower + '.io' ||
-                        baseDomain === queryLower + '.dev' ||
                         baseDomain === queryLower + '.co') {
                         return true;
                     }
                 }
-                
                 return false;
             } catch {
                 return false;
@@ -1047,14 +1546,9 @@
         // ============================================
         function rankResults(results, query) {
             const queryLower = query.toLowerCase().trim();
-            
             const scored = results.map(result => {
                 let score = result.score || 0;
-                
-                if (isOfficialWebsite(result.url, query)) {
-                    score += 100;
-                }
-                
+                if (isOfficialWebsite(result.url, query)) score += 100;
                 try {
                     const urlObj = new URL(result.url);
                     const domain = urlObj.hostname.replace(/^www\./, '');
@@ -1067,28 +1561,19 @@
                         score += 80;
                     }
                 } catch {}
-                
                 const urlLower = result.url.toLowerCase();
                 const nonOfficialDomains = [
-                    'wikipedia.org', 'github.com', 'support.', 'docs.', 'docs', 'help.',
-                    'blog.', 'blog', 'news.', 'developers.', 'status.',
+                    'wikipedia.org', 'github.com', 'support.', 'docs.', 'help.',
+                    'blog.', 'news.', 'developers.', 'api.', 'status.',
                     'about.', 'products.', 'store.', 'appstore', 'play.google',
                     'itunes.apple', 'microsoft.com/store', 'amazon.com/dp'
                 ];
-                
                 for (const domain of nonOfficialDomains) {
-                    if (urlLower.includes(domain)) {
-                        score -= 50;
-                    }
+                    if (urlLower.includes(domain)) score -= 50;
                 }
-                
-                if (result.title && result.title.toLowerCase().includes(queryLower)) {
-                    score += 20;
-                }
-                
+                if (result.title && result.title.toLowerCase().includes(queryLower)) score += 20;
                 return { ...result, score };
             });
-            
             return scored.sort((a, b) => b.score - a.score);
         }
 
@@ -1118,11 +1603,10 @@
         }
 
         // ============================================
-        // RENDER TOP RESULTS GRID (shared)
+        // RENDER TOP RESULTS GRID
         // ============================================
         function renderTopResultsGrid(results, query) {
             const topResults = results.slice(0, 4);
-            
             return `
                 <div class="grid-label">
                     <i class="fas fa-arrow-right"></i> Click any result to go directly:
@@ -1134,7 +1618,6 @@
                         const domain = getDomainName(result.url);
                         const title = truncateText(result.title || 'Untitled', 30);
                         const domainTruncated = truncateText(domain, 25);
-                        
                         let badgeHtml = '';
                         if (index === 0 && isOfficialResult) {
                             badgeHtml = `<span class="card-badge official"><i class="fas fa-check-circle"></i> Official</span>`;
@@ -1145,7 +1628,6 @@
                         } else {
                             badgeHtml = `<span class="card-badge rank">#${index + 1}</span>`;
                         }
-                        
                         return `
                             <a href="${result.url}" target="_blank" class="result-card" onclick="event.stopPropagation(); window.location.href='${result.url}'; return false;">
                                 <div class="card-favicon">
@@ -1182,16 +1664,13 @@
             const settings = getSettings();
             const hasDelay = settings.redirectDelay !== false;
             const showTopResults = settings.showTopResults !== false;
-            
             const rankedResults = rankResults(results, query);
             const topResult = rankedResults[0];
             const isOfficial = isOfficialWebsite(topResult.url, query);
-            
             let topResultsHtml = '';
             if (showTopResults && rankedResults.length > 0) {
                 topResultsHtml = renderTopResultsGrid(rankedResults, query);
             }
-            
             return `
                 <div class="result-content">
                     <div class="minimal-redirect">
@@ -1217,19 +1696,15 @@
             const settings = getSettings();
             const showTopResults = settings.showTopResults !== false;
             const hasDelay = settings.redirectDelay !== false;
-            
             const rankedResults = rankResults(results, query);
             const topResult = rankedResults[0];
             const isOfficial = isOfficialWebsite(topResult.url, query);
-            
             let topResultsHtml = '';
             if (showTopResults && rankedResults.length > 0) {
                 topResultsHtml = renderTopResultsGrid(rankedResults, query);
             }
-
             const titleTruncated = truncateText(topResult.title || 'Untitled', 60);
             const descTruncated = truncateText(topResult.content || '', 200);
-
             return `
                 <div class="result-content">
                     <div class="result-status">
@@ -1343,7 +1818,7 @@
                     </div>
                     <div class="verbose-details" style="background: rgba(255,255,255,0.4);">
                         <div style="color: #666;">
-                            <i class="fas fa-key"></i> Your API key has been configured successfully.
+                            <i class="fas fa-key"></i> Your settings have been saved successfully.
                         </div>
                     </div>
                 </div>
@@ -1354,8 +1829,6 @@
         // MAIN SEARCH FUNCTION
         // ============================================
         let redirectTimeout = null;
-        let currentResults = null;
-        let currentQuery = '';
 
         async function searchAndRedirect() {
             const query = input.value.trim();
@@ -1390,15 +1863,9 @@
                 const settings = getSettings();
                 const isVerbose = settings.verbose || false;
                 const hasDelay = settings.redirectDelay !== false;
-                
                 const rankedResults = rankResults(results, query);
                 const topResult = rankedResults[0];
 
-                // Store results for potential re-rendering
-                currentResults = rankedResults;
-                currentQuery = query;
-
-                // Show results in either minimal or verbose mode
                 if (isVerbose) {
                     showResult(renderVerboseResults(rankedResults, query), 'success');
                 } else {
@@ -1499,31 +1966,35 @@
                 clearTimeout(redirectTimeout);
                 redirectTimeout = null;
             }
-            currentResults = null;
-            currentQuery = '';
         });
 
+        // Settings
         settingsBtn.addEventListener('click', function() {
-            settingsModal.classList.add('active');
+            settingsOverlay.classList.add('active');
             apiKeyInput.value = getApiKey();
             loadSettings();
-            apiKeyInput.focus();
+            renderQuicklinksEditor();
+            document.body.style.overflow = 'hidden';
         });
 
-        modalClose.addEventListener('click', function() {
-            settingsModal.classList.remove('active');
+        settingsClose.addEventListener('click', function() {
+            settingsOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         });
 
-        settingsModal.addEventListener('click', function(e) {
+        settingsOverlay.addEventListener('click', function(e) {
             if (e.target === this) {
-                settingsModal.classList.remove('active');
+                settingsOverlay.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
 
-        saveApiBtn.addEventListener('click', function() {
+        // Save Settings
+        saveSettingsBtn.addEventListener('click', function() {
             const key = apiKeyInput.value.trim();
             
             const settings = {
+                newTab: newTabToggle.checked,
                 verbose: verboseToggle.checked,
                 showTopResults: showTopResultsToggle.checked,
                 redirectDelay: redirectDelayToggle.checked
@@ -1534,7 +2005,34 @@
                 setApiKey(key);
             }
             
-            settingsModal.classList.remove('active');
+            // Save quicklinks from editor
+            const links = getQuicklinks();
+            const nameInputs = document.querySelectorAll('.ql-name-input');
+            const urlInputs = document.querySelectorAll('.ql-url-input');
+            const typeSelects = document.querySelectorAll('.ql-icon-type');
+            const iconInputs = document.querySelectorAll('.ql-icon-input');
+            const colorInputs = document.querySelectorAll('.ql-color');
+            
+            nameInputs.forEach((el, i) => {
+                if (links[i]) links[i].name = el.value;
+            });
+            urlInputs.forEach((el, i) => {
+                if (links[i]) links[i].url = el.value;
+            });
+            typeSelects.forEach((el, i) => {
+                if (links[i]) links[i].iconType = el.value;
+            });
+            iconInputs.forEach((el, i) => {
+                if (links[i]) links[i].icon = el.value;
+            });
+            colorInputs.forEach((el, i) => {
+                if (links[i]) links[i].color = el.value;
+            });
+            saveQuicklinks(links);
+            
+            settingsOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            
             showResult(renderSettingsSaved(), 'success');
             setTimeout(() => {
                 resultDiv.className = '';
@@ -1546,29 +2044,15 @@
             if (confirm('Remove the saved API key?')) {
                 setApiKey('');
                 updateApiStatus();
-                settingsModal.classList.remove('active');
-                showResult(
-                    renderError('API key removed. Add a new key in settings to continue.'),
-                    'error'
-                );
-                setTimeout(() => {
-                    resultDiv.className = '';
-                    resultDiv.innerHTML = '';
-                }, 3000);
             }
         });
 
-        apiKeyInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                saveApiBtn.click();
-            }
-        });
-
+        // ============================================
+        // URL PARAMETER HANDLING
+        // ============================================
         function handleURLParams() {
             const params = new URLSearchParams(window.location.search);
             const query = params.get('q');
-            
             if (query) {
                 input.value = query;
                 toggleClearButton();
@@ -1576,8 +2060,12 @@
             }
         }
 
+        // ============================================
+        // INIT
+        // ============================================
         updateApiStatus();
         loadSettings();
+        renderQuicklinks();
         window.onload = handleURLParams;
     </script>
 </body>
