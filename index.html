@@ -22,6 +22,7 @@
             justify-content: center;
             padding: 20px;
             transition: background 0.3s ease;
+            overflow: hidden;
         }
 
         body.newtab-mode {
@@ -29,6 +30,7 @@
             padding: 30px 20px;
             align-items: flex-start;
             padding-top: 40px;
+            overflow-y: auto;
         }
 
         .container {
@@ -80,10 +82,10 @@
             margin-top: 2px;
         }
 
-        /* Quick Links - Small icon only */
+        /* Quick Links - Minimal icon only */
         .quicklinks {
             display: none;
-            gap: 8px;
+            gap: 12px;
             margin-bottom: 24px;
             justify-content: center;
             flex-wrap: wrap;
@@ -94,37 +96,37 @@
         }
 
         .quicklink {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
             transition: all 0.2s ease;
             cursor: pointer;
-            background: white;
-            border: 1px solid #e8e8e8;
-            font-size: 18px;
+            background: #f0f0f0;
+            border: none;
+            font-size: 22px;
             color: #1a1a1a;
             position: relative;
         }
 
         .quicklink:hover {
-            border-color: #1a1a1a;
+            background: #e0e0e0;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
 
         .quicklink img {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
             object-fit: contain;
         }
 
         .quicklink .fa-icon {
-            font-size: 18px;
+            font-size: 22px;
         }
 
         /* Header */
@@ -624,7 +626,7 @@
             margin-right: 4px;
         }
 
-        /* Fullscreen Settings */
+        /* Fullscreen Settings - No Scroll */
         .settings-overlay {
             position: fixed;
             top: 0;
@@ -634,31 +636,54 @@
             background: white;
             z-index: 2000;
             display: none;
-            overflow-y: auto;
             padding: 40px 20px;
+            overflow: hidden;
         }
 
         .settings-overlay.active {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             animation: fadeIn 0.3s ease;
         }
 
         .settings-container {
             max-width: 600px;
-            margin: 0 auto;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .settings-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .settings-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .settings-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        .settings-container::-webkit-scrollbar-thumb:hover {
+            background: #999;
         }
 
         .settings-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 32px;
-            padding-bottom: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
             border-bottom: 1px solid #f0f0f0;
         }
 
         .settings-header h2 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
             letter-spacing: -0.02em;
         }
@@ -666,11 +691,11 @@
         .settings-close {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 22px;
             color: #999;
             cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 10px;
+            padding: 6px 10px;
+            border-radius: 8px;
             transition: all 0.2s;
         }
 
@@ -680,20 +705,20 @@
         }
 
         .settings-section {
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .settings-section h3 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: #1a1a1a;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .settings-section .helper {
             font-size: 13px;
             color: #999;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .settings-section .helper a {
@@ -704,14 +729,14 @@
         .settings-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .settings-toggle {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #f5f5f5;
         }
 
@@ -781,7 +806,7 @@
 
         .settings-input {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 14px;
             font-size: 14px;
             font-family: 'Inter', sans-serif;
             border: 2px solid #e8e8e8;
@@ -798,9 +823,9 @@
 
         .quicklink-item {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
-            padding: 10px;
+            padding: 8px 10px;
             background: #fafafa;
             border-radius: 10px;
             border: 1px solid #f0f0f0;
@@ -809,8 +834,8 @@
 
         .quicklink-item .ql-name-input {
             flex: 1;
-            min-width: 80px;
-            padding: 8px 12px;
+            min-width: 70px;
+            padding: 6px 10px;
             font-size: 13px;
             font-family: 'Inter', sans-serif;
             border: 1px solid #e8e8e8;
@@ -821,8 +846,8 @@
 
         .quicklink-item .ql-url-input {
             flex: 2;
-            min-width: 120px;
-            padding: 8px 12px;
+            min-width: 100px;
+            padding: 6px 10px;
             font-size: 13px;
             font-family: 'Inter', sans-serif;
             border: 1px solid #e8e8e8;
@@ -837,7 +862,7 @@
         }
 
         .quicklink-item .ql-icon-type {
-            padding: 6px 10px;
+            padding: 5px 8px;
             font-size: 12px;
             font-family: 'Inter', sans-serif;
             border: 1px solid #e8e8e8;
@@ -848,8 +873,9 @@
         }
 
         .quicklink-item .ql-icon-input {
-            width: 120px;
-            padding: 8px 12px;
+            flex: 1;
+            min-width: 80px;
+            padding: 6px 10px;
             font-size: 13px;
             font-family: 'Inter', sans-serif;
             border: 1px solid #e8e8e8;
@@ -862,19 +888,9 @@
             border-color: #1a1a1a;
         }
 
-        .quicklink-item .ql-color {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 2px solid #e8e8e8;
-            cursor: pointer;
-            flex-shrink: 0;
-            padding: 0;
-        }
-
         .quicklink-item .ql-preview {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -883,6 +899,7 @@
             font-size: 16px;
             flex-shrink: 0;
             border: 1px solid #e8e8e8;
+            color: #1a1a1a;
         }
 
         .quicklink-item .ql-preview img {
@@ -897,8 +914,8 @@
             border: none;
             color: #ccc;
             cursor: pointer;
-            padding: 4px 8px;
-            font-size: 16px;
+            padding: 4px 6px;
+            font-size: 14px;
             transition: color 0.2s;
         }
 
@@ -907,17 +924,17 @@
         }
 
         .add-quicklink-btn {
-            padding: 10px;
+            padding: 8px;
             border: 2px dashed #e0e0e0;
             border-radius: 10px;
             background: none;
             cursor: pointer;
             color: #999;
-            font-size: 14px;
+            font-size: 13px;
             font-family: 'Inter', sans-serif;
             transition: all 0.2s;
             width: 100%;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .add-quicklink-btn:hover {
@@ -928,19 +945,19 @@
         .settings-actions {
             display: flex;
             gap: 10px;
-            margin-top: 24px;
-            padding-top: 24px;
+            margin-top: 20px;
+            padding-top: 16px;
             border-top: 1px solid #f0f0f0;
         }
 
         .settings-actions button {
             flex: 1;
-            padding: 14px;
-            font-size: 15px;
+            padding: 12px;
+            font-size: 14px;
             font-weight: 500;
             font-family: 'Inter', sans-serif;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -1018,11 +1035,11 @@
             }
 
             .settings-container {
-                padding: 0 10px;
+                padding: 0 5px;
             }
 
             .settings-header h2 {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .newtab-clock {
@@ -1043,7 +1060,53 @@
 
             .quicklink-item .ql-icon-input {
                 flex: 1;
-                min-width: 80px;
+                min-width: 60px;
+            }
+
+            .settings-overlay {
+                padding: 20px 12px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .newtab-clock {
+                font-size: 40px;
+            }
+            .newtab-date {
+                font-size: 14px;
+            }
+            .newtab-greeting {
+                font-size: 17px;
+            }
+            body.newtab-mode {
+                padding-top: 20px;
+            }
+            .newtab-header {
+                margin-bottom: 16px;
+            }
+            .quicklinks {
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+            .quicklink {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+                border-radius: 12px;
+            }
+            .quicklink img {
+                width: 22px;
+                height: 22px;
+            }
+            body.newtab-mode .header {
+                margin-bottom: 12px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            input {
+                padding: 12px 44px 12px 42px;
+                font-size: 14px;
             }
         }
     </style>
@@ -1240,10 +1303,10 @@
         // QUICK LINKS MANAGEMENT
         // ============================================
         const defaultQuicklinks = [
-            { name: 'Google', url: 'https://google.com', iconType: 'fa', icon: 'fa-google', color: '#4285f4' },
-            { name: 'YouTube', url: 'https://youtube.com', iconType: 'fa', icon: 'fa-youtube', color: '#ff0000' },
-            { name: 'GitHub', url: 'https://github.com', iconType: 'fa', icon: 'fa-github', color: '#333' },
-            { name: 'Reddit', url: 'https://reddit.com', iconType: 'fa', icon: 'fa-reddit', color: '#ff4500' }
+            { name: 'Google', url: 'https://google.com', iconType: 'fa', icon: 'fa-google', color: '#f0f0f0' },
+            { name: 'YouTube', url: 'https://youtube.com', iconType: 'fa', icon: 'fa-youtube', color: '#f0f0f0' },
+            { name: 'GitHub', url: 'https://github.com', iconType: 'fa', icon: 'fa-github', color: '#f0f0f0' },
+            { name: 'Reddit', url: 'https://reddit.com', iconType: 'fa', icon: 'fa-reddit', color: '#f0f0f0' }
         ];
 
         function getQuicklinks() {
@@ -1272,12 +1335,14 @@
                 if (link.iconType === 'image' && link.icon) {
                     iconHtml = `<img src="${link.icon}" alt="${link.name}">`;
                 } else if (link.iconType === 'fa' && link.icon) {
-                    iconHtml = `<i class="fas ${link.icon} fa-icon"></i>`;
+                    // Check if it's a brand icon or regular
+                    const iconClass = link.icon;
+                    iconHtml = `<i class="${iconClass} fa-icon"></i>`;
                 } else {
                     iconHtml = `<i class="fas fa-link fa-icon"></i>`;
                 }
                 return `
-                    <a href="${link.url}" class="quicklink" target="_blank" title="${link.name}" style="background: ${link.color || '#f0f0f0'}; color: white; border-color: ${link.color || '#e8e8e8'};">
+                    <a href="${link.url}" class="quicklink" target="_blank" title="${link.name}">
                         ${iconHtml}
                     </a>
                 `;
@@ -1286,7 +1351,12 @@
 
         function renderQuicklinksEditor() {
             const links = getQuicklinks();
-            quicklinksEditor.innerHTML = links.map((link, index) => `
+            quicklinksEditor.innerHTML = links.map((link, index) => {
+                // Determine if it's a brand icon
+                const isBrand = link.icon && link.icon.includes('fa-brands');
+                const iconValue = link.icon || '';
+                
+                return `
                 <div class="quicklink-item">
                     <input type="text" class="ql-name-input" value="${link.name}" placeholder="Name" data-index="${index}">
                     <input type="text" class="ql-url-input" value="${link.url}" placeholder="URL" data-index="${index}">
@@ -1294,19 +1364,18 @@
                         <option value="fa" ${link.iconType === 'fa' ? 'selected' : ''}>Font Awesome</option>
                         <option value="image" ${link.iconType === 'image' ? 'selected' : ''}>Image URL</option>
                     </select>
-                    <input type="text" class="ql-icon-input" value="${link.icon || ''}" placeholder="Icon (fa-xxx or image URL)" data-index="${index}">
+                    <input type="text" class="ql-icon-input" value="${iconValue}" placeholder="fa-xxx or image URL" data-index="${index}">
                     <div class="ql-preview" id="preview-${index}">
                         ${link.iconType === 'image' && link.icon ? 
                             `<img src="${link.icon}" alt="preview">` : 
                             link.iconType === 'fa' && link.icon ? 
-                            `<i class="fas ${link.icon}"></i>` : 
+                            `<i class="${link.icon}"></i>` : 
                             `<i class="fas fa-link"></i>`
                         }
                     </div>
-                    <input type="color" class="ql-color" value="${link.color || '#f0f0f0'}" data-index="${index}">
                     <button class="ql-remove" data-index="${index}"><i class="fas fa-times"></i></button>
                 </div>
-            `).join('');
+            `}).join('');
 
             // Add event listeners
             document.querySelectorAll('.ql-name-input').forEach(el => {
@@ -1321,9 +1390,6 @@
             });
             document.querySelectorAll('.ql-icon-input').forEach(el => {
                 el.addEventListener('input', updateQuicklinkPreview);
-                el.addEventListener('change', updateQuicklink);
-            });
-            document.querySelectorAll('.ql-color').forEach(el => {
                 el.addEventListener('change', updateQuicklink);
             });
             document.querySelectorAll('.ql-remove').forEach(el => {
@@ -1346,7 +1412,7 @@
             if (type === 'image' && icon) {
                 preview.innerHTML = `<img src="${icon}" alt="preview" onerror="this.style.display='none'">`;
             } else if (type === 'fa' && icon) {
-                preview.innerHTML = `<i class="fas ${icon}"></i>`;
+                preview.innerHTML = `<i class="${icon}"></i>`;
             } else {
                 preview.innerHTML = `<i class="fas fa-link"></i>`;
             }
@@ -1359,13 +1425,11 @@
             const urlInput = document.querySelector(`.ql-url-input[data-index="${index}"]`);
             const typeSelect = document.querySelector(`.ql-icon-type[data-index="${index}"]`);
             const iconInput = document.querySelector(`.ql-icon-input[data-index="${index}"]`);
-            const colorInput = document.querySelector(`.ql-color[data-index="${index}"]`);
             
             if (nameInput) links[index].name = nameInput.value;
             if (urlInput) links[index].url = urlInput.value;
             if (typeSelect) links[index].iconType = typeSelect.value;
             if (iconInput) links[index].icon = iconInput.value;
-            if (colorInput) links[index].color = colorInput.value;
             
             saveQuicklinks(links);
         }
@@ -1384,10 +1448,9 @@
                 url: 'https://example.com', 
                 iconType: 'fa', 
                 icon: 'fa-link', 
-                color: '#666' 
+                color: '#f0f0f0' 
             });
             saveQuicklinks(links);
-            // Re-render with preview updates
             renderQuicklinksEditor();
         }
 
@@ -2011,7 +2074,6 @@
             const urlInputs = document.querySelectorAll('.ql-url-input');
             const typeSelects = document.querySelectorAll('.ql-icon-type');
             const iconInputs = document.querySelectorAll('.ql-icon-input');
-            const colorInputs = document.querySelectorAll('.ql-color');
             
             nameInputs.forEach((el, i) => {
                 if (links[i]) links[i].name = el.value;
@@ -2024,9 +2086,6 @@
             });
             iconInputs.forEach((el, i) => {
                 if (links[i]) links[i].icon = el.value;
-            });
-            colorInputs.forEach((el, i) => {
-                if (links[i]) links[i].color = el.value;
             });
             saveQuicklinks(links);
             
