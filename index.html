@@ -22,13 +22,11 @@
             justify-content: center;
             padding: 20px;
             transition: background 0.3s ease;
-            overflow: hidden;
         }
 
         body.newtab-mode {
             background: #f8f9fa;
             padding: 0;
-            overflow: hidden;
             align-items: stretch;
         }
 
@@ -43,7 +41,8 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 40px 20px 20px 20px;
+            padding: 30px 20px 100px 20px;
+            position: relative;
         }
 
         @keyframes fadeIn {
@@ -58,7 +57,6 @@
             align-items: center;
             flex: 1;
             justify-content: center;
-            padding-bottom: 40px;
         }
 
         body.newtab-mode .newtab-header {
@@ -84,10 +82,10 @@
         .quicklinks {
             display: none;
             gap: 14px;
-            margin-bottom: 40px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: 40px;
+            margin-bottom: 0;
         }
 
         body.newtab-mode .quicklinks {
@@ -134,12 +132,16 @@
             width: 100%;
             max-width: 720px;
             margin: 0 auto;
-            padding-bottom: 20px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0 20px;
+            z-index: 10;
         }
 
         body.newtab-mode .bottom-search {
             display: block;
-            flex-shrink: 0;
         }
 
         .bottom-search .search-wrapper {
@@ -789,40 +791,17 @@
             z-index: 2000;
             display: none;
             padding: 40px 20px;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .settings-overlay.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
             animation: fadeIn 0.3s ease;
         }
 
         .settings-container {
             max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-
-        .settings-container::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .settings-container::-webkit-scrollbar-track {
-            background: #f0f0f0;
-            border-radius: 4px;
-        }
-
-        .settings-container::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 4px;
-        }
-
-        .settings-container::-webkit-scrollbar-thumb:hover {
-            background: #999;
+            margin: 0 auto;
         }
 
         .settings-header {
@@ -1160,7 +1139,7 @@
         /* Responsive */
         @media (max-width: 600px) {
             .newtab-clock {
-                font-size: 52px;
+                font-size: 48px;
             }
 
             .newtab-date {
@@ -1209,7 +1188,12 @@
             }
 
             body.newtab-mode .container {
-                padding: 30px 16px 16px 16px;
+                padding: 20px 16px 90px 16px;
+            }
+
+            .bottom-search {
+                bottom: 20px;
+                padding: 0 16px;
             }
         }
 
@@ -1223,8 +1207,7 @@
             }
             .quicklinks {
                 gap: 10px;
-                margin-top: 20px;
-                margin-bottom: 30px;
+                margin-top: 30px;
             }
             .quicklink {
                 width: 44px;
@@ -1241,7 +1224,10 @@
                 font-size: 14px;
             }
             body.newtab-mode .container {
-                padding: 20px 16px 12px 16px;
+                padding: 16px 16px 80px 16px;
+            }
+            .bottom-search {
+                bottom: 16px;
             }
         }
     </style>
@@ -1470,7 +1456,6 @@
         // ============================================
         function syncSearchInputs(source, target) {
             target.value = source.value;
-            // Trigger clear button visibility
             const clearBtnTarget = target === input ? clearBtn : bottomClearBtn;
             if (target.value.length > 0) {
                 clearBtnTarget.classList.add('visible');
@@ -1489,7 +1474,6 @@
             toggleBottomClearButton();
         });
 
-        // Enter key on both inputs
         input.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -1512,7 +1496,6 @@
             }
         });
 
-        // Clear buttons
         clearBtn.addEventListener('click', function() {
             input.value = '';
             bottomInput.value = '';
@@ -1755,7 +1738,6 @@
         function applySettings(settings) {
             if (settings.newTab) {
                 document.body.classList.add('newtab-mode');
-                // Focus bottom input in new tab mode
                 setTimeout(() => bottomInput.focus(), 100);
             } else {
                 document.body.classList.remove('newtab-mode');
@@ -2135,7 +2117,6 @@
         let redirectTimeout = null;
 
         async function searchAndRedirect() {
-            // Use whichever input has content
             const query = input.value.trim() || bottomInput.value.trim();
 
             if (!query) {
@@ -2280,7 +2261,6 @@
             }
         });
 
-        // Save Settings
         saveSettingsBtn.addEventListener('click', function() {
             const key = apiKeyInput.value.trim();
             
