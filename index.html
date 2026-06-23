@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexoSearch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            color: #1a1a1a;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1a1a1a 0%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .settings-btn:hover {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            color: #999;
+            font-size: 15px;
+            font-weight: 400;
+            margin-bottom: 32px;
+            letter-spacing: -0.01em;
+        }
+
+        /* Search */
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bbb;
+            font-size: 16px;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 52px 16px 48px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            border: 2px solid #e8e8e8;
+            border-radius: 14px;
+            outline: none;
+            background: #fafafa;
+            transition: all 0.25s ease;
+            color: #1a1a1a;
+            letter-spacing: -0.01em;
+        }
+
+        input::placeholder {
+            color: #bbb;
+            font-weight: 400;
+        }
+
+        input:focus {
+            border-color: #1a1a1a;
+            background: #ffffff;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+        }
+
+        input:focus + .search-icon {
+            color: #1a1a1a;
+        }
+
+        input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .clear-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px 6px;
+            display: none;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .clear-btn:hover {
+            color: #666;
+            background: #f0f0f0;
+        }
+
+        .clear-btn.visible {
+            display: block;
+        }
+
+        /* Keyboard shortcut hint */
+        .hint {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            color: #ccc;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            pointer-events: none;
+        }
+
+        input:focus ~ .hint {
+            display: none;
+        }
+
+        /* Results */
+        #result {
+            margin-top: 24px;
+            padding: 20px 24px;
+            border-radius: 14px;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #result.visible {
+            display: block;
+        }
+
+        #result.loading {
+            background: #f7f7f7;
+            border: 1px solid #eee;
+        }
+
+        #result.success {
+            background: #f6faf7;
+            border: 1px solid #d4e8d9;
+        }
+
+        #result.error {
+            background: #fdf6f6;
+            border: 1px solid #f5d6d6;
+        }
+
+        .result-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .result-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            font-size: 15px;
+            color: #1a1a1a;
+        }
+
+        .result-status .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e8e8e8;
+            border-top-color: #1a1a1a;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .result-details {
+            margin-top: 6px;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .result-details .label {
+            color: #999;
+            font-weight: 400;
+            margin-right: 6px;
+        }
+
+        .result-details .title {
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .result-details .url {
+            color: #1a1a1a;
+            text-decoration: none;
+            border-bottom: 1px solid #e8e8e8;
+            transition: border-color 0.2s;
+            word-break: break-all;
+        }
+
+        .result-details .url:hover {
+            border-color: #1a1a1a;
+        }
+
+        .result-details .description {
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .result-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .result-meta .badge {
+            background: rgba(0,0,0,0.04);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .error-details {
+            font-family: 'Inter', monospace;
+            font-size: 13px;
+            background: rgba(0,0,0,0.02);
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-top: 8px;
+            line-height: 1.8;
+            color: #666;
+            overflow-x: auto;
+        }
+
+        .error-details strong {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .error-details code {
+            background: #f0f0f0;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        /* Settings Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 440px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .modal-body label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .modal-body input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            outline: none;
+            background: #fafafa;
+            transition: all 0.2s;
+        }
+
+        .modal-body input:focus {
+            border-color: #1a1a1a;
+            background: white;
+        }
+
+        .modal-body .helper {
+            font-size: 13px;
+            color: #999;
+            line-height: 1.5;
+            margin-top: -8px;
+        }
+
+        .modal-body .helper a {
+            color: #1a1a1a;
+            text-decoration: underline;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .modal-footer button {
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #eee;
+        }
+
+        .btn-danger {
+            background: #fdf6f6;
+            color: #c62828;
+        }
+
+        .btn-danger:hover {
+            background: #fce4e4;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-dot.configured {
+            background: #4caf50;
+        }
+
+        .status-dot.missing {
+            background: #ef5350;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
+
+            input {
+                padding: 14px 44px 14px 42px;
+                font-size: 15px;
+            }
+
+            .hint {
+                display: none;
+            }
+
+            #result {
+                padding: 16px 18px;
+            }
+
+            .result-details {
+                font-size: 13px;
+                padding: 12px 14px;
+            }
+
+            .modal {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-group">
+                <i class="fas fa-compass logo-icon"></i>
+                <h1>NexoSearch</h1>
+            </div>
+            <button class="settings-btn" id="settingsBtn" aria-label="Settings">
+                <i class="fas fa-sliders-h"></i>
+            </button>
+        </div>
+        <p class="subtitle">Type anything. Press Enter. Get the best result.</p>
+
+        <!-- Search -->
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search the web..." 
+                autofocus
+                autocomplete="off"
+            >
+            <button class="clear-btn" id="clearBtn" aria-label="Clear search">
+                <i class="fas fa-times"></i>
+            </button>
+            <span class="hint">↵</span>
+        </div>
+
+        <!-- Results -->
+        <div id="result"></div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-sliders-h" style="margin-right: 8px; color: #999;"></i>Settings</h2>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="apiKeyInput">
+                    <i class="fas fa-key" style="margin-right: 6px; color: #999;"></i>
+                    Brave Search API Key
+                </label>
+                <input 
+                    type="password" 
+                    id="apiKeyInput" 
+                    placeholder="Enter your API key..."
+                    autocomplete="off"
+                >
+                <div class="helper">
+                    <span id="apiStatus">
+                        <span class="status-dot missing"></span>
+                        No API key configured
+                    </span>
+                    <br>
+                    Get your free key from 
+                    <a href="https://brave.com/search/api/" target="_blank">Brave Search API</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="clearApiBtn">
+                    <i class="fas fa-trash-alt"></i> Clear
+                </button>
+                <button class="btn-primary" id="saveApiBtn">
+                    <i class="fas fa-check"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const API_URL = 'https://api.search.brave.com/res/v1/web/search';
+        const STORAGE_KEY = 'nexosearch_api_key';
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+        const input = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearBtn');
+        const resultDiv = document.getElementById('result');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+        const modalClose = document.getElementById('modalClose');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveApiBtn = document.getElementById('saveApiBtn');
+        const clearApiBtn = document.getElementById('clearApiBtn');
+        const apiStatus = document.getElementById('apiStatus');
+
+        // ============================================
+        // API KEY MANAGEMENT
+        // ============================================
+        function getApiKey() {
+            return localStorage.getItem(STORAGE_KEY) || '';
+        }
+
+        function setApiKey(key) {
+            if (key.trim()) {
+                localStorage.setItem(STORAGE_KEY, key.trim());
+            } else {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+            updateApiStatus();
+        }
+
+        function updateApiStatus() {
+            const key = getApiKey();
+            if (key) {
+                apiStatus.innerHTML = `
+                    <span class="status-dot configured"></span>
+                    API key configured
+                `;
+                apiKeyInput.value = key;
+            } else {
+                apiStatus.innerHTML = `
+                    <span class="status-dot missing"></span>
+                    No API key configured
+                `;
+                apiKeyInput.value = '';
+            }
+        }
+
+        // ============================================
+        // UI HELPERS
+        // ============================================
+        function showResult(message, type = 'loading') {
+            resultDiv.className = 'visible ' + type;
+            resultDiv.innerHTML = message;
+        }
+
+        function setLoading(loading) {
+            input.disabled = loading;
+            if (loading) {
+                input.style.opacity = '0.6';
+            } else {
+                input.style.opacity = '1';
+            }
+        }
+
+        function toggleClearButton() {
+            if (input.value.length > 0) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+        }
+
+        // ============================================
+        // RENDER RESULT HTML
+        // ============================================
+        function renderLoading(query) {
+            return `
+                <div class="result-content">
+                    <div class="result-status">
+                        <span class="spinner"></span>
+                        Searching for "${query}"...
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSuccess(result, total) {
+            return `
+                <div class="result-content">
+                    <div class="result-status">
+                        <i class="fas fa-check-circle" style="color: #2e7d32; font-size: 18px;"></i>
+                        Best match found
+                    </div>
+                    <div class="result-details">
+                        <div>
+                            <span class="label">Title</span>
+                            <span class="title">${result.title || 'Untitled'}</span>
+                        </div>
+                        <div>
+                            <span class="label">URL</span>
+                            <a href="${result.url}" target="_blank" class="url">${result.url}</a>
+                        </div>
+                        ${result.description ? `
+                            <div class="description">
+                                <span class="label">Description</span>
+                                ${result.description}
+                            </div>
+                        ` : ''}
+                        <div class="result-meta">
+                            <span><i class="far fa-clock"></i> Redirecting in 1.5s</span>
+                            <span class="badge"><i class="far fa-file-alt"></i> ${total} results</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderError(message, details = '') {
+            return `
+                <div class="result-content">
+                    <div class="result-status">
+                        <i class="fas fa-exclamation-circle" style="color: #c62828; font-size: 18px;"></i>
+                        Something went wrong
+                    </div>
+                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
+                        <div style="color: #666; margin-bottom: 8px;">${message}</div>
+                        ${details ? `
+                            <div class="error-details">
+                                <strong><i class="fas fa-info-circle"></i> Details</strong><br>
+                                ${details}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderNoResults(query) {
+            return `
+                <div class="result-content">
+                    <div class="result-status">
+                        <i class="fas fa-search-minus" style="color: #999; font-size: 18px;"></i>
+                        No results found
+                    </div>
+                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
+                        <div style="color: #888;">
+                            We couldn't find anything for "<strong>${query}</strong>".<br>
+                            Try a different search term.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderApiKeyError() {
+            return `
+                <div class="result-content">
+                    <div class="result-status">
+                        <i class="fas fa-key" style="color: #f57c00; font-size: 18px;"></i>
+                        API key required
+                    </div>
+                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
+                        <div style="color: #666;">
+                            <i class="fas fa-cog"></i> Click the settings icon 
+                            <i class="fas fa-sliders-h"></i> to add your Brave Search API key.
+                        </div>
+                        <div class="error-details" style="margin-top: 10px;">
+                            <strong><i class="fas fa-lightbulb"></i> Get a free key</strong><br>
+                            1. Go to <a href="https://brave.com/search/api/" target="_blank" style="color: #1a1a1a;">brave.com/search/api/</a><br>
+                            2. Sign up for the free tier<br>
+                            3. Add your key in settings
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // MAIN SEARCH FUNCTION
+        // ============================================
+        async function searchAndRedirect() {
+            const query = input.value.trim();
+
+            if (!query) {
+                showResult(renderError('Please enter a search term.'), 'error');
+                return;
+            }
+
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                showResult(renderApiKeyError(), 'error');
+                return;
+            }
+
+            showResult(renderLoading(query), 'loading');
+            setLoading(true);
+
+            try {
+                const results = await fetchBraveSearch(query, apiKey);
+
+                if (!results || results.length === 0) {
+                    showResult(renderNoResults(query), 'error');
+                    return;
+                }
+
+                const bestResult = results[0];
+                showResult(renderSuccess(bestResult, results.length), 'success');
+
+                setTimeout(() => {
+                    window.location.href = bestResult.url;
+                }, 1500);
+
+            } catch (error) {
+                showResult(
+                    renderError(
+                        error.message || 'An unexpected error occurred',
+                        `Time: ${new Date().toLocaleString()}<br>Query: "${query}"`
+                    ),
+                    'error'
+                );
+                console.error('Search error:', error);
+            } finally {
+                setLoading(false);
+                input.focus();
+            }
+        }
+
+        // ============================================
+        // BRAVE SEARCH API
+        // ============================================
+        async function fetchBraveSearch(query, apiKey) {
+            const params = new URLSearchParams({
+                q: query,
+                count: 10,
+                safesearch: 'moderate'
+            });
+
+            const response = await fetch(`${API_URL}?${params}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Subscription-Token': apiKey
+                }
+            });
+
+            if (!response.ok) {
+                let errorMessage = `HTTP ${response.status}`;
+                try {
+                    const errorData = await response.json();
+                    if (errorData.message) {
+                        errorMessage += `: ${errorData.message}`;
+                    }
+                } catch (e) {}
+                throw new Error(errorMessage);
+            }
+
+            const data = await response.json();
+
+            if (!data?.web?.results) {
+                throw new Error('Invalid API response format');
+            }
+
+            return data.web.results.map(result => ({
+                title: result.title || '',
+                url: result.url || '',
+                description: result.description || ''
+            }));
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        input.addEventListener('input', toggleClearButton);
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchAndRedirect();
+            }
+        });
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            toggleClearButton();
+            input.focus();
+            resultDiv.className = '';
+            resultDiv.innerHTML = '';
+        });
+
+        // Settings
+        settingsBtn.addEventListener('click', function() {
+            settingsModal.classList.add('active');
+            apiKeyInput.value = getApiKey();
+            apiKeyInput.focus();
+        });
+
+        modalClose.addEventListener('click', function() {
+            settingsModal.classList.remove('active');
+        });
+
+        settingsModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                settingsModal.classList.remove('active');
+            }
+        });
+
+        saveApiBtn.addEventListener('click', function() {
+            const key = apiKeyInput.value.trim();
+            if (key) {
+                setApiKey(key);
+                settingsModal.classList.remove('active');
+                // Show success feedback
+                showResult(
+                    renderSuccess(
+                        { title: 'API Key Saved', url: '#', description: 'Your API key has been configured successfully.' },
+                        1
+                    ),
+                    'success'
+                );
+                setTimeout(() => {
+                    resultDiv.className = '';
+                    resultDiv.innerHTML = '';
+                }, 2000);
+            } else {
+                apiKeyInput.focus();
+                apiKeyInput.style.borderColor = '#ef5350';
+                setTimeout(() => {
+                    apiKeyInput.style.borderColor = '#e8e8e8';
+                }, 2000);
+            }
+        });
+
+        clearApiBtn.addEventListener('click', function() {
+            if (confirm('Remove the saved API key?')) {
+                setApiKey('');
+                updateApiStatus();
+                settingsModal.classList.remove('active');
+                showResult(
+                    renderError('API key removed. Add a new key in settings to continue.'),
+                    'error'
+                );
+                setTimeout(() => {
+                    resultDiv.className = '';
+                    resultDiv.innerHTML = '';
+                }, 3000);
+            }
+        });
+
+        // Enter key in settings
+        apiKeyInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                saveApiBtn.click();
+            }
+        });
+
+        // ============================================
+        // URL PARAMETER HANDLING
+        // ============================================
+        function handleURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get('q');
+            
+            if (query) {
+                input.value = query;
+                toggleClearButton();
+                setTimeout(searchAndRedirect, 400);
+            }
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        updateApiStatus();
+        window.onload = handleURLParams;
+    </script>
+</body>
+</html>
