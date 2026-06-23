@@ -301,6 +301,74 @@
             color: #666;
         }
 
+        /* Top Results Grid */
+        .top-results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .top-results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .result-card {
+            background: white;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #e8e8e8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        .result-card:hover {
+            border-color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .result-card .card-title {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .result-card .card-url {
+            font-size: 12px;
+            color: #999;
+            word-break: break-all;
+        }
+
+        .result-card .card-badge {
+            display: inline-block;
+            font-size: 10px;
+            background: #f0f0f0;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-top: 6px;
+            color: #666;
+        }
+
+        .result-card .card-badge.top {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .result-card .card-badge.clickable {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
         .error-details {
             font-family: 'Inter', monospace;
             font-size: 13px;
@@ -387,7 +455,7 @@
         .modal-body {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
 
         .modal-body label {
@@ -396,7 +464,8 @@
             color: #1a1a1a;
         }
 
-        .modal-body input {
+        .modal-body input[type="password"],
+        .modal-body input[type="text"] {
             width: 100%;
             padding: 12px 14px;
             font-size: 14px;
@@ -423,6 +492,84 @@
         .modal-body .helper a {
             color: #1a1a1a;
             text-decoration: underline;
+        }
+
+        .settings-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .settings-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .settings-toggle:last-child {
+            border-bottom: none;
+        }
+
+        .settings-toggle .toggle-label {
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 400;
+        }
+
+        .settings-toggle .toggle-label small {
+            display: block;
+            font-size: 12px;
+            color: #999;
+            font-weight: 300;
+            margin-top: 2px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: #1a1a1a;
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
         }
 
         .modal-footer {
@@ -565,25 +712,55 @@
                 </button>
             </div>
             <div class="modal-body">
-                <label for="apiKeyInput">
-                    <i class="fas fa-key" style="margin-right: 6px; color: #999;"></i>
-                    Tavily API Key
-                </label>
-                <input 
-                    type="password" 
-                    id="apiKeyInput" 
-                    placeholder="Enter your Tavily API key..."
-                    autocomplete="off"
-                >
-                <div class="helper">
-                    <span id="apiStatus">
-                        <span class="status-dot missing"></span>
-                        No API key configured
-                    </span>
-                    <br>
-                    Get your free key from 
-                    <a href="https://app.tavily.com/home" target="_blank">Tavily</a>
-                    — 1,000 free credits/month, no card required!
+                <div>
+                    <label for="apiKeyInput">
+                        <i class="fas fa-key" style="margin-right: 6px; color: #999;"></i>
+                        Tavily API Key
+                    </label>
+                    <input 
+                        type="password" 
+                        id="apiKeyInput" 
+                        placeholder="Enter your Tavily API key..."
+                        autocomplete="off"
+                    >
+                    <div class="helper" style="margin-top: 6px;">
+                        <span id="apiStatus">
+                            <span class="status-dot missing"></span>
+                            No API key configured
+                        </span>
+                        <br>
+                        Get your free key from 
+                        <a href="https://app.tavily.com/home" target="_blank">Tavily</a>
+                        — 1,000 free credits/month, no card required!
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-toggle">
+                        <div>
+                            <div class="toggle-label">
+                                Show top results
+                                <small>Show 4 top results to choose from before redirect</small>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="showTopResultsToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="settings-toggle">
+                        <div>
+                            <div class="toggle-label">
+                                Redirect delay
+                                <small>Wait 2 seconds before auto-redirecting</small>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="redirectDelayToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -603,6 +780,7 @@
         // ============================================
         const API_URL = 'https://api.tavily.com/search';
         const STORAGE_KEY = 'nexosearch_api_key';
+        const SETTINGS_KEY = 'nexosearch_settings';
 
         // ============================================
         // DOM ELEMENTS
@@ -617,6 +795,30 @@
         const saveApiBtn = document.getElementById('saveApiBtn');
         const clearApiBtn = document.getElementById('clearApiBtn');
         const apiStatus = document.getElementById('apiStatus');
+        const showTopResultsToggle = document.getElementById('showTopResultsToggle');
+        const redirectDelayToggle = document.getElementById('redirectDelayToggle');
+
+        // ============================================
+        // SETTINGS MANAGEMENT
+        // ============================================
+        function getSettings() {
+            try {
+                const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
+                return settings || { showTopResults: true, redirectDelay: true };
+            } catch {
+                return { showTopResults: true, redirectDelay: true };
+            }
+        }
+
+        function saveSettings(settings) {
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+        }
+
+        function loadSettings() {
+            const settings = getSettings();
+            showTopResultsToggle.checked = settings.showTopResults !== false;
+            redirectDelayToggle.checked = settings.redirectDelay !== false;
+        }
 
         // ============================================
         // API KEY MANAGEMENT
@@ -690,32 +892,66 @@
             `;
         }
 
-        function renderSuccess(result, total) {
+        function renderResultsWithChoices(results, redirectUrl) {
+            const settings = getSettings();
+            const showTopResults = settings.showTopResults !== false;
+            const hasDelay = settings.redirectDelay !== false;
+            
+            let topResultsHtml = '';
+            if (showTopResults && results.length > 0) {
+                const topResults = results.slice(0, 4);
+                topResultsHtml = `
+                    <div style="margin: 12px 0 6px 0; font-size: 13px; color: #999; font-weight: 500;">
+                        <i class="fas fa-arrow-right"></i> Click any result to go directly:
+                    </div>
+                    <div class="top-results-grid">
+                        ${topResults.map((result, index) => `
+                            <a href="${result.url}" target="_blank" class="result-card" onclick="event.stopPropagation(); window.location.href='${result.url}'; return false;">
+                                <div class="card-title">${result.title || 'Untitled'}</div>
+                                <div class="card-url">${result.url.replace(/^https?:\/\//, '').substring(0, 50)}${result.url.length > 50 ? '...' : ''}</div>
+                                <span class="card-badge ${index === 0 ? 'top' : ''}">${index === 0 ? '⭐ Top' : `#${index + 1}`}</span>
+                                <span class="card-badge clickable"><i class="fas fa-mouse-pointer"></i> Click to go</span>
+                            </a>
+                        `).join('')}
+                    </div>
+                    ${hasDelay ? `
+                        <div style="margin-top: 12px; font-size: 13px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 12px;">
+                            <i class="far fa-clock"></i> Auto-redirecting to <strong>${results[0].title || 'top result'}</strong> in 2 seconds...
+                            <br><span style="font-size: 12px; color: #bbb;">Click any card above to go there immediately</span>
+                        </div>
+                    ` : `
+                        <div style="margin-top: 12px; font-size: 13px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 12px;">
+                            <i class="fas fa-arrow-right"></i> Click any result above to go directly
+                        </div>
+                    `}
+                `;
+            }
+
             return `
                 <div class="result-content">
                     <div class="result-status">
                         <i class="fas fa-check-circle" style="color: #2e7d32; font-size: 18px;"></i>
-                        Best match found
+                        ${results.length} results found
                     </div>
                     <div class="result-details">
                         <div>
-                            <span class="label">Title</span>
-                            <span class="title">${result.title || 'Untitled'}</span>
+                            <span class="label">Top result</span>
+                            <span class="title">${results[0].title || 'Untitled'}</span>
                         </div>
                         <div>
                             <span class="label">URL</span>
-                            <a href="${result.url}" target="_blank" class="url">${result.url}</a>
+                            <a href="${results[0].url}" target="_blank" class="url">${results[0].url}</a>
                         </div>
-                        ${result.content ? `
+                        ${results[0].content ? `
                             <div class="description">
                                 <span class="label">Description</span>
-                                ${result.content.substring(0, 200)}${result.content.length > 200 ? '...' : ''}
+                                ${results[0].content.substring(0, 200)}${results[0].content.length > 200 ? '...' : ''}
                             </div>
                         ` : ''}
                         <div class="result-meta">
-                            <span><i class="far fa-clock"></i> Redirecting in 1.5s</span>
-                            <span class="badge"><i class="far fa-file-alt"></i> ${total} results</span>
+                            <span class="badge"><i class="far fa-file-alt"></i> ${results.length} results</span>
                         </div>
+                        ${topResultsHtml}
                     </div>
                 </div>
             `;
@@ -782,9 +1018,27 @@
             `;
         }
 
+        function renderSettingsSaved() {
+            return `
+                <div class="result-content">
+                    <div class="result-status">
+                        <i class="fas fa-check-circle" style="color: #2e7d32; font-size: 18px;"></i>
+                        Settings saved
+                    </div>
+                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
+                        <div style="color: #666;">
+                            Your API key has been configured successfully.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         // ============================================
         // MAIN SEARCH FUNCTION
         // ============================================
+        let redirectTimeout = null;
+
         async function searchAndRedirect() {
             const query = input.value.trim();
 
@@ -799,6 +1053,12 @@
                 return;
             }
 
+            // Clear any existing timeout
+            if (redirectTimeout) {
+                clearTimeout(redirectTimeout);
+                redirectTimeout = null;
+            }
+
             showResult(renderLoading(query), 'loading');
             setLoading(true);
 
@@ -810,12 +1070,18 @@
                     return;
                 }
 
-                const bestResult = results[0];
-                showResult(renderSuccess(bestResult, results.length), 'success');
+                const settings = getSettings();
+                const hasDelay = settings.redirectDelay !== false;
 
-                setTimeout(() => {
-                    window.location.href = bestResult.url;
-                }, 1500);
+                // Show results with choices
+                showResult(renderResultsWithChoices(results, results[0].url), 'success');
+
+                // Auto-redirect only if delay is enabled
+                if (hasDelay) {
+                    redirectTimeout = setTimeout(() => {
+                        window.location.href = results[0].url;
+                    }, 2000);
+                }
 
             } catch (error) {
                 showResult(
@@ -887,6 +1153,11 @@
         input.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
+                // Clear any pending redirect
+                if (redirectTimeout) {
+                    clearTimeout(redirectTimeout);
+                    redirectTimeout = null;
+                }
                 searchAndRedirect();
             }
         });
@@ -897,12 +1168,17 @@
             input.focus();
             resultDiv.className = '';
             resultDiv.innerHTML = '';
+            if (redirectTimeout) {
+                clearTimeout(redirectTimeout);
+                redirectTimeout = null;
+            }
         });
 
         // Settings
         settingsBtn.addEventListener('click', function() {
             settingsModal.classList.add('active');
             apiKeyInput.value = getApiKey();
+            loadSettings();
             apiKeyInput.focus();
         });
 
@@ -916,30 +1192,30 @@
             }
         });
 
+        // Save settings (API key + toggles)
         saveApiBtn.addEventListener('click', function() {
             const key = apiKeyInput.value.trim();
+            
+            // Save toggles
+            const settings = {
+                showTopResults: showTopResultsToggle.checked,
+                redirectDelay: redirectDelayToggle.checked
+            };
+            saveSettings(settings);
+            
+            // Save API key if provided
             if (key) {
                 setApiKey(key);
-                settingsModal.classList.remove('active');
-                // Show success feedback
-                showResult(
-                    renderSuccess(
-                        { title: 'API Key Saved', url: '#', content: 'Your Tavily API key has been configured successfully.' },
-                        1
-                    ),
-                    'success'
-                );
-                setTimeout(() => {
-                    resultDiv.className = '';
-                    resultDiv.innerHTML = '';
-                }, 2000);
-            } else {
-                apiKeyInput.focus();
-                apiKeyInput.style.borderColor = '#ef5350';
-                setTimeout(() => {
-                    apiKeyInput.style.borderColor = '#e8e8e8';
-                }, 2000);
             }
+            
+            settingsModal.classList.remove('active');
+            
+            // Show success without redirect message
+            showResult(renderSettingsSaved(), 'success');
+            setTimeout(() => {
+                resultDiv.className = '';
+                resultDiv.innerHTML = '';
+            }, 2000);
         });
 
         clearApiBtn.addEventListener('click', function() {
@@ -984,6 +1260,7 @@
         // INIT
         // ============================================
         updateApiStatus();
+        loadSettings();
         window.onload = handleURLParams;
     </script>
 </body>
