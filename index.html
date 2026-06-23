@@ -567,12 +567,12 @@
             <div class="modal-body">
                 <label for="apiKeyInput">
                     <i class="fas fa-key" style="margin-right: 6px; color: #999;"></i>
-                    Brave Search API Key
+                    Tavily API Key
                 </label>
                 <input 
                     type="password" 
                     id="apiKeyInput" 
-                    placeholder="Enter your API key..."
+                    placeholder="Enter your Tavily API key..."
                     autocomplete="off"
                 >
                 <div class="helper">
@@ -582,7 +582,8 @@
                     </span>
                     <br>
                     Get your free key from 
-                    <a href="https://brave.com/search/api/" target="_blank">Brave Search API</a>
+                    <a href="https://app.tavily.com/home" target="_blank">Tavily</a>
+                    — 1,000 free credits/month, no card required!
                 </div>
             </div>
             <div class="modal-footer">
@@ -600,7 +601,7 @@
         // ============================================
         // CONFIGURATION
         // ============================================
-        const API_URL = 'https://api.search.brave.com/res/v1/web/search';
+        const API_URL = 'https://api.tavily.com/search';
         const STORAGE_KEY = 'nexosearch_api_key';
 
         // ============================================
@@ -705,10 +706,10 @@
                             <span class="label">URL</span>
                             <a href="${result.url}" target="_blank" class="url">${result.url}</a>
                         </div>
-                        ${result.description ? `
+                        ${result.content ? `
                             <div class="description">
                                 <span class="label">Description</span>
-                                ${result.description}
+                                ${result.content.substring(0, 200)}${result.content.length > 200 ? '...' : ''}
                             </div>
                         ` : ''}
                         <div class="result-meta">
@@ -767,13 +768,14 @@
                     <div class="result-details" style="background: rgba(255,255,255,0.4);">
                         <div style="color: #666;">
                             <i class="fas fa-cog"></i> Click the settings icon 
-                            <i class="fas fa-sliders-h"></i> to add your Brave Search API key.
+                            <i class="fas fa-sliders-h"></i> to add your Tavily API key.
                         </div>
                         <div class="error-details" style="margin-top: 10px;">
                             <strong><i class="fas fa-lightbulb"></i> Get a free key</strong><br>
-                            1. Go to <a href="https://brave.com/search/api/" target="_blank" style="color: #1a1a1a;">brave.com/search/api/</a><br>
-                            2. Sign up for the free tier<br>
-                            3. Add your key in settings
+                            1. Go to <a href="https://app.tavily.com/home" target="_blank" style="color: #1a1a1a;">app.tavily.com/home</a><br>
+                            2. Sign up for free (no card required!)<br>
+                            3. Copy your API key from the dashboard<br>
+                            4. Add it here in settings
                         </div>
                     </div>
                 </div>
@@ -801,7 +803,7 @@
             setLoading(true);
 
             try {
-                const results = await fetchBraveSearch(query, apiKey);
+                const results = await fetchTavilySearch(query, apiKey);
 
                 if (!results || results.length === 0) {
                     showResult(renderNoResults(query), 'error');
@@ -831,27 +833,32 @@
         }
 
         // ============================================
-        // BRAVE SEARCH API
+        // TAVILY SEARCH API
         // ============================================
-        async function fetchBraveSearch(query, apiKey) {
-            const params = new URLSearchParams({
-                q: query,
-                count: 10,
-                safesearch: 'moderate'
-            });
-
-            const response = await fetch(`${API_URL}?${params}`, {
+        async function fetchTavilySearch(query, apiKey) {
+            const response = await fetch(API_URL, {
+                method: 'POST',
                 headers: {
-                    'Accept': 'application/json',
-                    'X-Subscription-Token': apiKey
-                }
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    query: query,
+                    search_depth: 'basic',
+                    include_answer: false,
+                    include_images: false,
+                    include_raw_content: false,
+                    max_results: 10
+                })
             });
 
             if (!response.ok) {
                 let errorMessage = `HTTP ${response.status}`;
                 try {
                     const errorData = await response.json();
-                    if (errorData.message) {
+                    if (errorData.detail) {
+                        errorMessage += `: ${errorData.detail}`;
+                    } else if (errorData.message) {
                         errorMessage += `: ${errorData.message}`;
                     }
                 } catch (e) {}
@@ -860,14 +867,15 @@
 
             const data = await response.json();
 
-            if (!data?.web?.results) {
+            if (!data || !data.results) {
                 throw new Error('Invalid API response format');
             }
 
-            return data.web.results.map(result => ({
+            return data.results.map(result => ({
                 title: result.title || '',
                 url: result.url || '',
-                description: result.description || ''
+                content: result.content || '',
+                score: result.score || 0
             }));
         }
 
@@ -916,7 +924,7 @@
                 // Show success feedback
                 showResult(
                     renderSuccess(
-                        { title: 'API Key Saved', url: '#', description: 'Your API key has been configured successfully.' },
+                        { title: 'API Key Saved', url: '#', content: 'Your Tavily API key has been configured successfully.' },
                         1
                     ),
                     'success'
