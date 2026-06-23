@@ -1006,6 +1006,7 @@
                         baseDomain === queryLower + '.org' ||
                         baseDomain === queryLower + '.net' ||
                         baseDomain === queryLower + '.io' ||
+                        baseDomain === queryLower + '.dev' ||
                         baseDomain === queryLower + '.co') {
                         return true;
                     }
@@ -1069,8 +1070,8 @@
                 
                 const urlLower = result.url.toLowerCase();
                 const nonOfficialDomains = [
-                    'wikipedia.org', 'github.com', 'support.', 'docs.', 'help.',
-                    'blog.', 'news.', 'developers.', 'api.', 'status.',
+                    'wikipedia.org', 'github.com', 'support.', 'docs.', 'docs', 'help.',
+                    'blog.', 'blog', 'news.', 'developers.', 'status.',
                     'about.', 'products.', 'store.', 'appstore', 'play.google',
                     'itunes.apple', 'microsoft.com/store', 'amazon.com/dp'
                 ];
