@@ -26,7 +26,7 @@
 
         .container {
             width: 100%;
-            max-width: 680px;
+            max-width: 720px;
             animation: fadeIn 0.5s ease;
         }
 
@@ -247,7 +247,43 @@
             to { transform: rotate(360deg); }
         }
 
-        .result-details {
+        /* Minimal mode - clean and simple */
+        .minimal-redirect {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .minimal-redirect .redirect-url {
+            font-size: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+            word-break: break-all;
+        }
+
+        .minimal-redirect .redirect-label {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 6px;
+        }
+
+        .minimal-redirect .redirect-timer {
+            font-size: 13px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .minimal-redirect .redirect-url a {
+            color: #1a1a1a;
+            text-decoration: none;
+            border-bottom: 2px solid #1a1a1a;
+        }
+
+        .minimal-redirect .redirect-url a:hover {
+            opacity: 0.7;
+        }
+
+        /* Verbose mode - detailed */
+        .verbose-details {
             margin-top: 6px;
             padding: 14px 16px;
             background: rgba(255,255,255,0.6);
@@ -256,18 +292,18 @@
             line-height: 1.6;
         }
 
-        .result-details .label {
+        .verbose-details .label {
             color: #999;
             font-weight: 400;
             margin-right: 6px;
         }
 
-        .result-details .title {
+        .verbose-details .title {
             font-weight: 500;
             color: #1a1a1a;
         }
 
-        .result-details .url {
+        .verbose-details .url {
             color: #1a1a1a;
             text-decoration: none;
             border-bottom: 1px solid #e8e8e8;
@@ -275,16 +311,18 @@
             word-break: break-all;
         }
 
-        .result-details .url:hover {
+        .verbose-details .url:hover {
             border-color: #1a1a1a;
         }
 
-        .result-details .description {
+        .verbose-details .description {
             color: #666;
             margin-top: 4px;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
-        .result-meta {
+        .verbose-meta {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -293,7 +331,7 @@
             color: #999;
         }
 
-        .result-meta .badge {
+        .verbose-meta .badge {
             background: rgba(0,0,0,0.04);
             padding: 2px 12px;
             border-radius: 20px;
@@ -301,15 +339,37 @@
             color: #666;
         }
 
-        /* Top Results Grid */
+        .official-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 11px;
+            padding: 1px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+            margin-left: 6px;
+        }
+
+        .official-badge i {
+            font-size: 10px;
+            margin-right: 3px;
+        }
+
+        /* Top Results Grid - 4x1 horizontal */
         .top-results-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-top: 12px;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
+            .top-results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 400px) {
             .top-results-grid {
                 grid-template-columns: 1fr;
             }
@@ -317,7 +377,7 @@
 
         .result-card {
             background: white;
-            padding: 12px 14px;
+            padding: 14px 12px;
             border-radius: 10px;
             border: 1px solid #e8e8e8;
             cursor: pointer;
@@ -325,8 +385,11 @@
             text-decoration: none;
             color: #1a1a1a;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
+            text-align: center;
+            min-width: 0;
+            gap: 6px;
         }
 
         .result-card:hover {
@@ -336,17 +399,18 @@
         }
 
         .result-card .card-favicon {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #f5f5f5;
-            font-size: 16px;
+            font-size: 22px;
             color: #999;
             overflow: hidden;
+            margin-bottom: 4px;
         }
 
         .result-card .card-favicon img {
@@ -356,34 +420,36 @@
         }
 
         .result-card .card-content {
-            flex: 1;
+            width: 100%;
             min-width: 0;
         }
 
         .result-card .card-title {
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            max-width: 100%;
         }
 
         .result-card .card-url {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            max-width: 100%;
+            margin-top: 2px;
         }
 
         .result-card .card-badge {
             display: inline-block;
             font-size: 10px;
-            background: #f0f0f0;
             padding: 1px 8px;
             border-radius: 10px;
-            margin-top: 2px;
-            color: #666;
+            margin-top: 4px;
+            font-weight: 500;
         }
 
         .result-card .card-badge.top {
@@ -391,9 +457,19 @@
             color: white;
         }
 
-        .result-card .card-badge.clickable {
+        .result-card .card-badge.official {
             background: #e8f5e9;
             color: #2e7d32;
+        }
+
+        .result-card .card-badge.official i {
+            font-size: 9px;
+            margin-right: 2px;
+        }
+
+        .result-card .card-badge.rank {
+            background: #f0f0f0;
+            color: #666;
         }
 
         .error-details {
@@ -684,13 +760,26 @@
                 padding: 16px 18px;
             }
 
-            .result-details {
-                font-size: 13px;
-                padding: 12px 14px;
-            }
-
             .modal {
                 padding: 24px;
+            }
+
+            .result-card .card-favicon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .result-card .card-title {
+                font-size: 12px;
+            }
+
+            .result-card .card-url {
+                font-size: 10px;
+            }
+
+            .minimal-redirect .redirect-url {
+                font-size: 16px;
             }
         }
     </style>
@@ -758,11 +847,25 @@
                         <br>
                         Get your free key from 
                         <a href="https://app.tavily.com/home" target="_blank">Tavily</a>
+                        <i class="fas fa-external-link-alt" style="font-size: 11px;"></i>
                         — 1,000 free credits/month, no card required!
                     </div>
                 </div>
 
                 <div class="settings-group">
+                    <div class="settings-toggle">
+                        <div>
+                            <div class="toggle-label">
+                                Verbose mode
+                                <small>Show detailed API information and results</small>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="verboseToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
                     <div class="settings-toggle">
                         <div>
                             <div class="toggle-label">
@@ -822,6 +925,7 @@
         const saveApiBtn = document.getElementById('saveApiBtn');
         const clearApiBtn = document.getElementById('clearApiBtn');
         const apiStatus = document.getElementById('apiStatus');
+        const verboseToggle = document.getElementById('verboseToggle');
         const showTopResultsToggle = document.getElementById('showTopResultsToggle');
         const redirectDelayToggle = document.getElementById('redirectDelayToggle');
 
@@ -831,9 +935,9 @@
         function getSettings() {
             try {
                 const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-                return settings || { showTopResults: true, redirectDelay: true };
+                return settings || { verbose: false, showTopResults: true, redirectDelay: true };
             } catch {
-                return { showTopResults: true, redirectDelay: true };
+                return { verbose: false, showTopResults: true, redirectDelay: true };
             }
         }
 
@@ -843,6 +947,7 @@
 
         function loadSettings() {
             const settings = getSettings();
+            verboseToggle.checked = settings.verbose || false;
             showTopResultsToggle.checked = settings.showTopResults !== false;
             redirectDelayToggle.checked = settings.redirectDelay !== false;
         }
@@ -868,7 +973,7 @@
             if (key) {
                 apiStatus.innerHTML = `
                     <span class="status-dot configured"></span>
-                    API key configured
+                    API key configured <i class="fas fa-check-circle" style="color: #4caf50; font-size: 12px;"></i>
                 `;
                 apiKeyInput.value = key;
             } else {
@@ -888,22 +993,19 @@
                 const urlObj = new URL(url);
                 const hostname = urlObj.hostname;
                 
-                // Remove www. and get base domain
                 const baseDomain = hostname.replace(/^www\./, '');
-                
-                // Check if the query is in the domain
                 const queryLower = query.toLowerCase().trim();
                 const domainParts = baseDomain.split('.');
                 
-                // Check if query matches the domain name
                 if (domainParts.length >= 2) {
                     const mainDomain = domainParts[domainParts.length - 2];
-                    // Check if query matches main domain or hostname
                     if (mainDomain === queryLower || 
                         baseDomain === queryLower || 
                         baseDomain === queryLower + '.com' ||
                         baseDomain === queryLower + '.org' ||
-                        baseDomain === queryLower + '.net') {
+                        baseDomain === queryLower + '.net' ||
+                        baseDomain === queryLower + '.io' ||
+                        baseDomain === queryLower + '.co') {
                         return true;
                     }
                 }
@@ -932,13 +1034,10 @@
             }
         }
 
-        function getFaviconFallback(url) {
-            try {
-                const urlObj = new URL(url);
-                return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=64`;
-            } catch {
-                return '';
-            }
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
         }
 
         // ============================================
@@ -947,16 +1046,13 @@
         function rankResults(results, query) {
             const queryLower = query.toLowerCase().trim();
             
-            // Score each result
             const scored = results.map(result => {
                 let score = result.score || 0;
                 
-                // Bonus for official website
                 if (isOfficialWebsite(result.url, query)) {
                     score += 100;
                 }
                 
-                // Bonus for exact domain match
                 try {
                     const urlObj = new URL(result.url);
                     const domain = urlObj.hostname.replace(/^www\./, '');
@@ -970,7 +1066,6 @@
                     }
                 } catch {}
                 
-                // Penalize common non-official domains
                 const urlLower = result.url.toLowerCase();
                 const nonOfficialDomains = [
                     'wikipedia.org', 'github.com', 'support.', 'docs.', 'help.',
@@ -985,7 +1080,6 @@
                     }
                 }
                 
-                // Bonus for title match
                 if (result.title && result.title.toLowerCase().includes(queryLower)) {
                     score += 20;
                 }
@@ -993,7 +1087,6 @@
                 return { ...result, score };
             });
             
-            // Sort by score
             return scored.sort((a, b) => b.score - a.score);
         }
 
@@ -1030,20 +1123,46 @@
                 <div class="result-content">
                     <div class="result-status">
                         <span class="spinner"></span>
+                        <i class="fas fa-search" style="color: #999; font-size: 14px;"></i>
                         Searching for "${query}"...
                     </div>
                 </div>
             `;
         }
 
-        function renderResultsWithChoices(results, query) {
+        function renderMinimalRedirect(result, query) {
+            const isOfficial = isOfficialWebsite(result.url, query);
+            const settings = getSettings();
+            const hasDelay = settings.redirectDelay !== false;
+            
+            return `
+                <div class="result-content">
+                    <div class="minimal-redirect">
+                        <div class="redirect-label">
+                            <i class="fas fa-arrow-right"></i> Redirecting to
+                            ${isOfficial ? '<span class="official-badge"><i class="fas fa-check-circle"></i> Official</span>' : ''}
+                        </div>
+                        <div class="redirect-url">
+                            <a href="${result.url}" target="_blank">${result.url}</a>
+                        </div>
+                        ${hasDelay ? `
+                            <div class="redirect-timer">
+                                <i class="far fa-clock"></i> Redirecting in 2 seconds...
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderVerboseResults(results, query) {
             const settings = getSettings();
             const showTopResults = settings.showTopResults !== false;
             const hasDelay = settings.redirectDelay !== false;
             
-            // Rank results smartly
             const rankedResults = rankResults(results, query);
             const topResult = rankedResults[0];
+            const isOfficial = isOfficialWebsite(topResult.url, query);
             
             let topResultsHtml = '';
             if (showTopResults && rankedResults.length > 0) {
@@ -1055,19 +1174,31 @@
                     <div class="top-results-grid">
                         ${topResults.map((result, index) => {
                             const faviconUrl = getFaviconUrl(result.url);
-                            const isOfficial = isOfficialWebsite(result.url, query);
+                            const isOfficialResult = isOfficialWebsite(result.url, query);
+                            const domain = getDomainName(result.url);
+                            const title = truncateText(result.title || 'Untitled', 30);
+                            const domainTruncated = truncateText(domain, 25);
+                            
+                            let badgeHtml = '';
+                            if (index === 0 && isOfficialResult) {
+                                badgeHtml = `<span class="card-badge official"><i class="fas fa-check-circle"></i> Official</span>`;
+                            } else if (index === 0) {
+                                badgeHtml = `<span class="card-badge top"><i class="fas fa-star"></i> Top</span>`;
+                            } else if (isOfficialResult) {
+                                badgeHtml = `<span class="card-badge official"><i class="fas fa-check-circle"></i> Official</span>`;
+                            } else {
+                                badgeHtml = `<span class="card-badge rank">#${index + 1}</span>`;
+                            }
+                            
                             return `
                                 <a href="${result.url}" target="_blank" class="result-card" onclick="event.stopPropagation(); window.location.href='${result.url}'; return false;">
                                     <div class="card-favicon">
                                         <img src="${faviconUrl}" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas fa-globe\\'></i>';">
                                     </div>
                                     <div class="card-content">
-                                        <div class="card-title">${result.title || 'Untitled'}</div>
-                                        <div class="card-url">${getDomainName(result.url)}</div>
-                                        <span class="card-badge ${index === 0 ? 'top' : ''}">
-                                            ${index === 0 ? '⭐ Official' : `#${index + 1}`}
-                                            ${isOfficial ? ' ✓' : ''}
-                                        </span>
+                                        <div class="card-title" title="${result.title || 'Untitled'}">${title}</div>
+                                        <div class="card-url" title="${domain}">${domainTruncated}</div>
+                                        ${badgeHtml}
                                     </div>
                                 </a>
                             `;
@@ -1075,8 +1206,8 @@
                     </div>
                     ${hasDelay ? `
                         <div style="margin-top: 12px; font-size: 13px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 12px;">
-                            <i class="far fa-clock"></i> Auto-redirecting to <strong>${topResult.title || 'top result'}</strong> in 2 seconds...
-                            <br><span style="font-size: 12px; color: #bbb;">Click any card above to go there immediately</span>
+                            <i class="far fa-clock"></i> Auto-redirecting to <strong>${truncateText(topResult.title || 'top result', 30)}</strong> in 2 seconds...
+                            <br><span style="font-size: 12px; color: #bbb;"><i class="fas fa-mouse-pointer"></i> Click any card above to go there immediately</span>
                         </div>
                     ` : `
                         <div style="margin-top: 12px; font-size: 13px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 12px;">
@@ -1086,31 +1217,35 @@
                 `;
             }
 
+            const titleTruncated = truncateText(topResult.title || 'Untitled', 60);
+            const descTruncated = truncateText(topResult.content || '', 200);
+
             return `
                 <div class="result-content">
                     <div class="result-status">
                         <i class="fas fa-check-circle" style="color: #2e7d32; font-size: 18px;"></i>
                         ${rankedResults.length} results found
-                        ${isOfficialWebsite(topResult.url, query) ? ' ⭐ Official site found!' : ''}
+                        ${isOfficial ? ' <span class="official-badge"><i class="fas fa-check-circle"></i> Official site found!</span>' : ''}
                     </div>
-                    <div class="result-details">
+                    <div class="verbose-details">
                         <div>
-                            <span class="label">Top result</span>
-                            <span class="title">${topResult.title || 'Untitled'}</span>
-                            ${isOfficialWebsite(topResult.url, query) ? ' <span style="font-size:12px;color:#2e7d32;font-weight:500;">✓ Official</span>' : ''}
+                            <span class="label"><i class="fas fa-tag" style="color: #999; font-size: 12px;"></i> Top result</span>
+                            <span class="title">${titleTruncated}</span>
+                            ${isOfficial ? ' <span class="official-badge"><i class="fas fa-check-circle"></i> Official</span>' : ''}
                         </div>
                         <div>
-                            <span class="label">URL</span>
+                            <span class="label"><i class="fas fa-link" style="color: #999; font-size: 12px;"></i> URL</span>
                             <a href="${topResult.url}" target="_blank" class="url">${topResult.url}</a>
                         </div>
                         ${topResult.content ? `
                             <div class="description">
-                                <span class="label">Description</span>
-                                ${topResult.content.substring(0, 200)}${topResult.content.length > 200 ? '...' : ''}
+                                <span class="label"><i class="fas fa-align-left" style="color: #999; font-size: 12px;"></i> Description</span>
+                                ${descTruncated}
                             </div>
                         ` : ''}
-                        <div class="result-meta">
+                        <div class="verbose-meta">
                             <span class="badge"><i class="far fa-file-alt"></i> ${rankedResults.length} results</span>
+                            ${isOfficial ? '<span class="badge" style="background: #e8f5e9; color: #2e7d32;"><i class="fas fa-check-circle"></i> Official site verified</span>' : ''}
                         </div>
                         ${topResultsHtml}
                     </div>
@@ -1123,13 +1258,13 @@
                 <div class="result-content">
                     <div class="result-status">
                         <i class="fas fa-exclamation-circle" style="color: #c62828; font-size: 18px;"></i>
-                        Something went wrong
+                        Error
                     </div>
-                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
-                        <div style="color: #666; margin-bottom: 8px;">${message}</div>
+                    <div class="verbose-details" style="background: rgba(255,255,255,0.4);">
+                        <div style="color: #666; margin-bottom: 8px;"><i class="fas fa-info-circle" style="color: #999;"></i> ${message}</div>
                         ${details ? `
                             <div class="error-details">
-                                <strong><i class="fas fa-info-circle"></i> Details</strong><br>
+                                <strong><i class="fas fa-code"></i> Details</strong><br>
                                 ${details}
                             </div>
                         ` : ''}
@@ -1145,9 +1280,9 @@
                         <i class="fas fa-search-minus" style="color: #999; font-size: 18px;"></i>
                         No results found
                     </div>
-                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
+                    <div class="verbose-details" style="background: rgba(255,255,255,0.4);">
                         <div style="color: #888;">
-                            We couldn't find anything for "<strong>${query}</strong>".<br>
+                            <i class="fas fa-frown" style="color: #ccc;"></i> We couldn't find anything for "<strong>${query}</strong>".<br>
                             Try a different search term.
                         </div>
                     </div>
@@ -1162,15 +1297,15 @@
                         <i class="fas fa-key" style="color: #f57c00; font-size: 18px;"></i>
                         API key required
                     </div>
-                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
+                    <div class="verbose-details" style="background: rgba(255,255,255,0.4);">
                         <div style="color: #666;">
                             <i class="fas fa-cog"></i> Click the settings icon 
                             <i class="fas fa-sliders-h"></i> to add your Tavily API key.
                         </div>
                         <div class="error-details" style="margin-top: 10px;">
                             <strong><i class="fas fa-lightbulb"></i> Get a free key</strong><br>
-                            1. Go to <a href="https://app.tavily.com/home" target="_blank" style="color: #1a1a1a;">app.tavily.com/home</a><br>
-                            2. Sign up for free (no card required!)<br>
+                            1. Go to <a href="https://app.tavily.com/home" target="_blank" style="color: #1a1a1a;">app.tavily.com/home</a> <i class="fas fa-external-link-alt" style="font-size: 11px;"></i><br>
+                            2. Sign up for free <i class="fas fa-gem" style="color: #f57c00; font-size: 12px;"></i> (no card required!)<br>
                             3. Copy your API key from the dashboard<br>
                             4. Add it here in settings
                         </div>
@@ -1186,9 +1321,9 @@
                         <i class="fas fa-check-circle" style="color: #2e7d32; font-size: 18px;"></i>
                         Settings saved
                     </div>
-                    <div class="result-details" style="background: rgba(255,255,255,0.4);">
+                    <div class="verbose-details" style="background: rgba(255,255,255,0.4);">
                         <div style="color: #666;">
-                            Your API key has been configured successfully.
+                            <i class="fas fa-key"></i> Your API key has been configured successfully.
                         </div>
                     </div>
                 </div>
@@ -1214,7 +1349,6 @@
                 return;
             }
 
-            // Clear any existing timeout
             if (redirectTimeout) {
                 clearTimeout(redirectTimeout);
                 redirectTimeout = null;
@@ -1232,16 +1366,22 @@
                 }
 
                 const settings = getSettings();
+                const isVerbose = settings.verbose || false;
                 const hasDelay = settings.redirectDelay !== false;
+                
+                const rankedResults = rankResults(results, query);
+                const topResult = rankedResults[0];
 
-                // Show results with choices and smart ranking
-                showResult(renderResultsWithChoices(results, query), 'success');
+                // Show results in either minimal or verbose mode
+                if (isVerbose) {
+                    showResult(renderVerboseResults(results, query), 'success');
+                } else {
+                    showResult(renderMinimalRedirect(topResult, query), 'success');
+                }
 
-                // Auto-redirect only if delay is enabled
                 if (hasDelay) {
-                    const ranked = rankResults(results, query);
                     redirectTimeout = setTimeout(() => {
-                        window.location.href = ranked[0].url;
+                        window.location.href = topResult.url;
                     }, 2000);
                 }
 
@@ -1335,7 +1475,6 @@
             }
         });
 
-        // Settings
         settingsBtn.addEventListener('click', function() {
             settingsModal.classList.add('active');
             apiKeyInput.value = getApiKey();
@@ -1357,6 +1496,7 @@
             const key = apiKeyInput.value.trim();
             
             const settings = {
+                verbose: verboseToggle.checked,
                 showTopResults: showTopResultsToggle.checked,
                 redirectDelay: redirectDelayToggle.checked
             };
@@ -1397,9 +1537,6 @@
             }
         });
 
-        // ============================================
-        // URL PARAMETER HANDLING
-        // ============================================
         function handleURLParams() {
             const params = new URLSearchParams(window.location.search);
             const query = params.get('q');
@@ -1411,9 +1548,6 @@
             }
         }
 
-        // ============================================
-        // INIT
-        // ============================================
         updateApiStatus();
         loadSettings();
         window.onload = handleURLParams;
