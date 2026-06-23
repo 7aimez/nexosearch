@@ -27,10 +27,9 @@
 
         body.newtab-mode {
             background: #f8f9fa;
-            padding: 30px 20px;
-            align-items: flex-start;
-            padding-top: 40px;
-            overflow-y: auto;
+            padding: 0;
+            overflow: hidden;
+            align-items: stretch;
         }
 
         .container {
@@ -40,7 +39,11 @@
         }
 
         body.newtab-mode .container {
-            max-width: 720px;
+            max-width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 20px 20px 20px;
         }
 
         @keyframes fadeIn {
@@ -53,7 +56,9 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
+            flex: 1;
+            justify-content: center;
+            padding-bottom: 40px;
         }
 
         body.newtab-mode .newtab-header {
@@ -61,7 +66,7 @@
         }
 
         .newtab-clock {
-            font-size: 56px;
+            font-size: 72px;
             font-weight: 300;
             letter-spacing: -0.03em;
             color: #1a1a1a;
@@ -69,26 +74,20 @@
         }
 
         .newtab-date {
-            font-size: 16px;
+            font-size: 18px;
             color: #999;
-            margin-top: 4px;
+            margin-top: 8px;
             font-weight: 400;
         }
 
-        .newtab-greeting {
-            font-size: 20px;
-            font-weight: 500;
-            color: #1a1a1a;
-            margin-top: 2px;
-        }
-
-        /* Quick Links - Minimal icon only */
+        /* Quick Links */
         .quicklinks {
             display: none;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 14px;
+            margin-bottom: 40px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-top: 30px;
         }
 
         body.newtab-mode .quicklinks {
@@ -96,9 +95,9 @@
         }
 
         .quicklink {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -107,7 +106,7 @@
             cursor: pointer;
             background: #f0f0f0;
             border: none;
-            font-size: 22px;
+            font-size: 24px;
             color: #1a1a1a;
             position: relative;
         }
@@ -126,10 +125,120 @@
         }
 
         .quicklink .fa-icon {
-            font-size: 22px;
+            font-size: 24px;
         }
 
-        /* Header */
+        /* Bottom Search Bar - New Tab Mode */
+        .bottom-search {
+            display: none;
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        body.newtab-mode .bottom-search {
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .bottom-search .search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .bottom-search .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bbb;
+            font-size: 16px;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        .bottom-search input {
+            width: 100%;
+            padding: 16px 52px 16px 48px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            border: 2px solid #e8e8e8;
+            border-radius: 14px;
+            outline: none;
+            background: white;
+            transition: all 0.25s ease;
+            color: #1a1a1a;
+            letter-spacing: -0.01em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .bottom-search input::placeholder {
+            color: #bbb;
+            font-weight: 400;
+        }
+
+        .bottom-search input:focus {
+            border-color: #1a1a1a;
+            background: #ffffff;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+
+        .bottom-search input:focus + .search-icon {
+            color: #1a1a1a;
+        }
+
+        .bottom-search input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .bottom-search .clear-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px 6px;
+            display: none;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .bottom-search .clear-btn:hover {
+            color: #666;
+            background: #f0f0f0;
+        }
+
+        .bottom-search .clear-btn.visible {
+            display: block;
+        }
+
+        .bottom-search .hint {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            color: #ccc;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            pointer-events: none;
+        }
+
+        .bottom-search input:focus ~ .hint {
+            display: none;
+        }
+
+        /* Normal Mode Header */
         .header {
             display: flex;
             align-items: center;
@@ -138,8 +247,7 @@
         }
 
         body.newtab-mode .header {
-            margin-bottom: 20px;
-            justify-content: space-between;
+            display: none;
         }
 
         .logo-group {
@@ -180,6 +288,55 @@
             color: #1a1a1a;
         }
 
+        /* New Tab Mode Settings Button - Top Right */
+        .newtab-settings-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #999;
+            cursor: pointer;
+            padding: 10px 12px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        body.newtab-mode .newtab-settings-btn {
+            display: block;
+        }
+
+        .newtab-settings-btn:hover {
+            background: #f0f0f0;
+            color: #1a1a1a;
+        }
+
+        /* New Tab Mode Small Title */
+        .newtab-title {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            font-size: 18px;
+            font-weight: 500;
+            color: #999;
+            letter-spacing: 0.02em;
+        }
+
+        body.newtab-mode .newtab-title {
+            display: block;
+        }
+
+        .newtab-title span {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
         .subtitle {
             color: #999;
             font-size: 15px;
@@ -192,17 +349,21 @@
             display: none;
         }
 
-        /* Search */
-        .search-wrapper {
+        /* Normal Mode Search */
+        .normal-search {
+            display: block;
+        }
+
+        body.newtab-mode .normal-search {
+            display: none;
+        }
+
+        .normal-search .search-wrapper {
             position: relative;
             width: 100%;
         }
 
-        body.newtab-mode .search-wrapper {
-            width: 100%;
-        }
-
-        .search-icon {
+        .normal-search .search-icon {
             position: absolute;
             left: 16px;
             top: 50%;
@@ -213,7 +374,7 @@
             transition: color 0.2s;
         }
 
-        input {
+        .normal-search input {
             width: 100%;
             padding: 16px 52px 16px 48px;
             font-size: 16px;
@@ -227,36 +388,27 @@
             letter-spacing: -0.01em;
         }
 
-        body.newtab-mode input {
-            background: white;
-            border-color: #e0e0e0;
-            padding: 16px 52px 16px 48px;
-            font-size: 16px;
-            border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        input::placeholder {
+        .normal-search input::placeholder {
             color: #bbb;
             font-weight: 400;
         }
 
-        input:focus {
+        .normal-search input:focus {
             border-color: #1a1a1a;
             background: #ffffff;
             box-shadow: 0 4px 24px rgba(0,0,0,0.04);
         }
 
-        input:focus + .search-icon {
+        .normal-search input:focus + .search-icon {
             color: #1a1a1a;
         }
 
-        input:disabled {
+        .normal-search input:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
 
-        .clear-btn {
+        .normal-search .clear-btn {
             position: absolute;
             right: 14px;
             top: 50%;
@@ -272,16 +424,16 @@
             border-radius: 6px;
         }
 
-        .clear-btn:hover {
+        .normal-search .clear-btn:hover {
             color: #666;
             background: #f0f0f0;
         }
 
-        .clear-btn.visible {
+        .normal-search .clear-btn.visible {
             display: block;
         }
 
-        .hint {
+        .normal-search .hint {
             position: absolute;
             right: 16px;
             top: 50%;
@@ -297,7 +449,7 @@
             pointer-events: none;
         }
 
-        input:focus ~ .hint {
+        .normal-search input:focus ~ .hint {
             display: none;
         }
 
@@ -311,7 +463,7 @@
         }
 
         body.newtab-mode #result {
-            margin-top: 24px;
+            display: none !important;
         }
 
         @keyframes slideUp {
@@ -626,7 +778,7 @@
             margin-right: 4px;
         }
 
-        /* Fullscreen Settings - No Scroll */
+        /* Fullscreen Settings */
         .settings-overlay {
             position: fixed;
             top: 0;
@@ -1005,37 +1157,31 @@
             background: #ef5350;
         }
 
-        .fa-icon-preview {
-            font-size: 18px;
-        }
-
         /* Responsive */
         @media (max-width: 600px) {
-            h1 {
-                font-size: 28px;
-            }
-            
-            .subtitle {
-                font-size: 14px;
-                margin-bottom: 24px;
+            .newtab-clock {
+                font-size: 52px;
             }
 
-            input {
-                padding: 14px 44px 14px 42px;
+            .newtab-date {
                 font-size: 15px;
             }
 
-            body.newtab-mode input {
+            .quicklink {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+                border-radius: 14px;
+            }
+
+            .quicklink img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .bottom-search input {
                 padding: 14px 44px 14px 42px;
                 font-size: 15px;
-            }
-
-            .hint {
-                display: none;
-            }
-
-            #result {
-                padding: 16px 18px;
             }
 
             .settings-container {
@@ -1046,51 +1192,39 @@
                 font-size: 20px;
             }
 
-            .newtab-clock {
-                font-size: 40px;
-            }
-
-            .quicklink-item {
-                flex-wrap: wrap;
-            }
-
-            .quicklink-item .ql-name-input {
-                flex-basis: 100%;
-            }
-
-            .quicklink-item .ql-url-input {
-                flex-basis: 100%;
-            }
-
-            .quicklink-item .ql-icon-input {
-                flex: 1;
-                min-width: 60px;
-            }
-
             .settings-overlay {
                 padding: 20px 12px;
+            }
+
+            .newtab-title {
+                font-size: 15px;
+                top: 16px;
+            }
+
+            .newtab-settings-btn {
+                top: 14px;
+                right: 14px;
+                font-size: 18px;
+                padding: 8px 10px;
+            }
+
+            body.newtab-mode .container {
+                padding: 30px 16px 16px 16px;
             }
         }
 
         @media (max-height: 700px) {
             .newtab-clock {
-                font-size: 40px;
+                font-size: 44px;
             }
             .newtab-date {
                 font-size: 14px;
-            }
-            .newtab-greeting {
-                font-size: 17px;
-            }
-            body.newtab-mode {
-                padding-top: 20px;
-            }
-            .newtab-header {
-                margin-bottom: 16px;
+                margin-top: 4px;
             }
             .quicklinks {
-                gap: 8px;
-                margin-bottom: 16px;
+                gap: 10px;
+                margin-top: 20px;
+                margin-bottom: 30px;
             }
             .quicklink {
                 width: 44px;
@@ -1102,32 +1236,36 @@
                 width: 22px;
                 height: 22px;
             }
-            body.newtab-mode .header {
-                margin-bottom: 12px;
-            }
-            h1 {
-                font-size: 28px;
-            }
-            input {
+            .bottom-search input {
                 padding: 12px 44px 12px 42px;
                 font-size: 14px;
+            }
+            body.newtab-mode .container {
+                padding: 20px 16px 12px 16px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- New Tab Mode Settings Button (Top Right) -->
+    <button class="newtab-settings-btn" id="newtabSettingsBtn" aria-label="Settings">
+        <i class="fas fa-sliders-h"></i>
+    </button>
+
+    <!-- New Tab Mode Title (Top Center) -->
+    <div class="newtab-title">Nexo<span>Search</span></div>
+
     <div class="container">
         <!-- New Tab Header -->
         <div class="newtab-header">
             <div class="newtab-clock" id="clock">00:00</div>
             <div class="newtab-date" id="date">January 1, 2024</div>
-            <div class="newtab-greeting" id="greeting">Good morning</div>
         </div>
 
         <!-- Quick Links -->
         <div class="quicklinks" id="quicklinks"></div>
 
-        <!-- Header -->
+        <!-- Normal Mode Header -->
         <div class="header">
             <div class="logo-group">
                 <i class="fas fa-compass logo-icon"></i>
@@ -1139,24 +1277,43 @@
         </div>
         <p class="subtitle">Type anything. Press Enter. Get the best result.</p>
 
-        <!-- Search -->
-        <div class="search-wrapper">
-            <i class="fas fa-search search-icon"></i>
-            <input 
-                type="text" 
-                id="searchInput" 
-                placeholder="Search the web..." 
-                autofocus
-                autocomplete="off"
-            >
-            <button class="clear-btn" id="clearBtn" aria-label="Clear search">
-                <i class="fas fa-times"></i>
-            </button>
-            <span class="hint">↵</span>
+        <!-- Normal Mode Search -->
+        <div class="normal-search">
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search the web..." 
+                    autofocus
+                    autocomplete="off"
+                >
+                <button class="clear-btn" id="clearBtn" aria-label="Clear search">
+                    <i class="fas fa-times"></i>
+                </button>
+                <span class="hint">↵</span>
+            </div>
         </div>
 
         <!-- Results -->
         <div id="result"></div>
+    </div>
+
+    <!-- New Tab Mode Bottom Search -->
+    <div class="bottom-search" id="bottomSearch">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input 
+                type="text" 
+                id="bottomSearchInput" 
+                placeholder="Search the web..." 
+                autocomplete="off"
+            >
+            <button class="clear-btn" id="bottomClearBtn" aria-label="Clear search">
+                <i class="fas fa-times"></i>
+            </button>
+            <span class="hint">↵</span>
+        </div>
     </div>
 
     <!-- Fullscreen Settings -->
@@ -1211,7 +1368,7 @@
                         <div>
                             <div class="toggle-label">
                                 New Tab Mode
-                                <small>Show clock, date, greeting and quick links</small>
+                                <small>Show clock, date and quick links with search at bottom</small>
                             </div>
                         </div>
                         <label class="toggle-switch">
@@ -1286,9 +1443,12 @@
         // DOM ELEMENTS
         // ============================================
         const input = document.getElementById('searchInput');
+        const bottomInput = document.getElementById('bottomSearchInput');
         const clearBtn = document.getElementById('clearBtn');
+        const bottomClearBtn = document.getElementById('bottomClearBtn');
         const resultDiv = document.getElementById('result');
         const settingsBtn = document.getElementById('settingsBtn');
+        const newtabSettingsBtn = document.getElementById('newtabSettingsBtn');
         const settingsOverlay = document.getElementById('settingsOverlay');
         const settingsClose = document.getElementById('settingsClose');
         const apiKeyInput = document.getElementById('apiKeyInput');
@@ -1304,7 +1464,98 @@
         const addQuicklinkBtn = document.getElementById('addQuicklinkBtn');
         const clock = document.getElementById('clock');
         const dateEl = document.getElementById('date');
-        const greeting = document.getElementById('greeting');
+
+        // ============================================
+        // SYNC BOTH SEARCH INPUTS
+        // ============================================
+        function syncSearchInputs(source, target) {
+            target.value = source.value;
+            // Trigger clear button visibility
+            const clearBtnTarget = target === input ? clearBtn : bottomClearBtn;
+            if (target.value.length > 0) {
+                clearBtnTarget.classList.add('visible');
+            } else {
+                clearBtnTarget.classList.remove('visible');
+            }
+        }
+
+        input.addEventListener('input', function() {
+            syncSearchInputs(this, bottomInput);
+            toggleClearButton();
+        });
+
+        bottomInput.addEventListener('input', function() {
+            syncSearchInputs(this, input);
+            toggleBottomClearButton();
+        });
+
+        // Enter key on both inputs
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (redirectTimeout) {
+                    clearTimeout(redirectTimeout);
+                    redirectTimeout = null;
+                }
+                searchAndRedirect();
+            }
+        });
+
+        bottomInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (redirectTimeout) {
+                    clearTimeout(redirectTimeout);
+                    redirectTimeout = null;
+                }
+                searchAndRedirect();
+            }
+        });
+
+        // Clear buttons
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            bottomInput.value = '';
+            toggleClearButton();
+            toggleBottomClearButton();
+            input.focus();
+            resultDiv.className = '';
+            resultDiv.innerHTML = '';
+            if (redirectTimeout) {
+                clearTimeout(redirectTimeout);
+                redirectTimeout = null;
+            }
+        });
+
+        bottomClearBtn.addEventListener('click', function() {
+            input.value = '';
+            bottomInput.value = '';
+            toggleClearButton();
+            toggleBottomClearButton();
+            bottomInput.focus();
+            resultDiv.className = '';
+            resultDiv.innerHTML = '';
+            if (redirectTimeout) {
+                clearTimeout(redirectTimeout);
+                redirectTimeout = null;
+            }
+        });
+
+        function toggleClearButton() {
+            if (input.value.length > 0) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+        }
+
+        function toggleBottomClearButton() {
+            if (bottomInput.value.length > 0) {
+                bottomClearBtn.classList.add('visible');
+            } else {
+                bottomClearBtn.classList.remove('visible');
+            }
+        }
 
         // ============================================
         // QUICK LINKS MANAGEMENT
@@ -1378,7 +1629,6 @@
                 </div>
             `}).join('');
 
-            // Add event listeners
             document.querySelectorAll('.ql-name-input').forEach(el => {
                 el.addEventListener('change', updateQuicklink);
             });
@@ -1466,12 +1716,6 @@
 
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             dateEl.textContent = now.toLocaleDateString('en-US', options);
-
-            const hour = now.getHours();
-            let greetingText = 'Good evening';
-            if (hour < 12) greetingText = 'Good morning';
-            else if (hour < 17) greetingText = 'Good afternoon';
-            greeting.textContent = greetingText;
         }
 
         updateClock();
@@ -1511,8 +1755,11 @@
         function applySettings(settings) {
             if (settings.newTab) {
                 document.body.classList.add('newtab-mode');
+                // Focus bottom input in new tab mode
+                setTimeout(() => bottomInput.focus(), 100);
             } else {
                 document.body.classList.remove('newtab-mode');
+                setTimeout(() => input.focus(), 100);
             }
             renderQuicklinks();
         }
@@ -1649,18 +1896,13 @@
 
         function setLoading(loading) {
             input.disabled = loading;
+            bottomInput.disabled = loading;
             if (loading) {
                 input.style.opacity = '0.6';
+                bottomInput.style.opacity = '0.6';
             } else {
                 input.style.opacity = '1';
-            }
-        }
-
-        function toggleClearButton() {
-            if (input.value.length > 0) {
-                clearBtn.classList.add('visible');
-            } else {
-                clearBtn.classList.remove('visible');
+                bottomInput.style.opacity = '1';
             }
         }
 
@@ -1893,7 +2135,8 @@
         let redirectTimeout = null;
 
         async function searchAndRedirect() {
-            const query = input.value.trim();
+            // Use whichever input has content
+            const query = input.value.trim() || bottomInput.value.trim();
 
             if (!query) {
                 showResult(renderError('Please enter a search term.'), 'error');
@@ -1951,7 +2194,11 @@
                 console.error('Search error:', error);
             } finally {
                 setLoading(false);
-                input.focus();
+                if (document.body.classList.contains('newtab-mode')) {
+                    bottomInput.focus();
+                } else {
+                    input.focus();
+                }
             }
         }
 
@@ -2003,35 +2250,17 @@
         }
 
         // ============================================
-        // EVENT LISTENERS
+        // SETTINGS EVENTS
         // ============================================
-        input.addEventListener('input', toggleClearButton);
-
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                if (redirectTimeout) {
-                    clearTimeout(redirectTimeout);
-                    redirectTimeout = null;
-                }
-                searchAndRedirect();
-            }
-        });
-
-        clearBtn.addEventListener('click', function() {
-            input.value = '';
-            toggleClearButton();
-            input.focus();
-            resultDiv.className = '';
-            resultDiv.innerHTML = '';
-            if (redirectTimeout) {
-                clearTimeout(redirectTimeout);
-                redirectTimeout = null;
-            }
-        });
-
-        // Settings
         settingsBtn.addEventListener('click', function() {
+            settingsOverlay.classList.add('active');
+            apiKeyInput.value = getApiKey();
+            loadSettings();
+            renderQuicklinksEditor();
+            document.body.style.overflow = 'hidden';
+        });
+
+        newtabSettingsBtn.addEventListener('click', function() {
             settingsOverlay.classList.add('active');
             apiKeyInput.value = getApiKey();
             loadSettings();
@@ -2067,7 +2296,6 @@
                 setApiKey(key);
             }
             
-            // Save quicklinks from editor
             const links = getQuicklinks();
             const nameInputs = document.querySelectorAll('.ql-name-input');
             const urlInputs = document.querySelectorAll('.ql-url-input');
@@ -2113,7 +2341,9 @@
             const query = params.get('q');
             if (query) {
                 input.value = query;
+                bottomInput.value = query;
                 toggleClearButton();
+                toggleBottomClearButton();
                 setTimeout(searchAndRedirect, 400);
             }
         }
